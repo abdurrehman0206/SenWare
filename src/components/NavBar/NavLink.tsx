@@ -11,8 +11,8 @@ const NavLink: React.FC<LinkType> = ({ id, name, path, icon }) => {
   return (
     <div
       className={clsx(
-        isActive(path) ? "bg-sky-200" : "",
-        "rounded-lg px-4 py-2 flex flex-row items-center hover:bg-sky-100",
+        isActive(path) ? "bg-sky-200" : "hover:bg-sky-100",
+        "rounded-lg px-4 py-2 flex flex-row items-center ",
       )}
     >
       <Link className="w-full flex flex-row items-center gap-2" href={path}>
