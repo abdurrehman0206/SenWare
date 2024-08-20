@@ -23,11 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx(poppins.className, "h-screen")}>
         <div className="bg-sky-200 p-2 h-full">
-          <div className="rounded-2xl ring-1 ring-sky-400 overflow-hidden bg-white h-full flex flex-col">
+          <div className="rounded-2xl overflow-hidden bg-white h-full flex flex-col shadow-lg">
             <TopBar />
             <div className="flex flex-row h-full ">
               <NavBar />
-              <div className="border w-full h-full bg-gray-100 rounded-tl-2xl overflow-hidden p-2">
+              <div className="w-full h-full bg-gray-100 rounded-tl-2xl overflow-hidden p-2">
                 {children}
               </div>
             </div>
