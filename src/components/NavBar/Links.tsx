@@ -1,4 +1,9 @@
+import { LinksArray } from "@/lib/store";
+import NavLink from "./NavLink";
 const Links = () => {
-  return <div> </div>;
+  const linkElement = LinksArray.map((link) => {
+    return <NavLink key={link.id} {...link} />;
+  });
+  return <div>{linkElement} </div>;
 };
 export default Links;
