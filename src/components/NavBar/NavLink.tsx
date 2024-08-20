@@ -15,7 +15,7 @@ const NavLink: React.FC<LinkType> = ({ id, name, path, icon }) => {
         "rounded-sm px-4 py-2 flex flex-row items-center gap-2 hover:bg-sky-100",
       )}
     >
-      <div>{icon}</div>
+      <div className="h-5 w-5">{icon}</div>
       <Link href={path}>{name}</Link>
     </div>
   );

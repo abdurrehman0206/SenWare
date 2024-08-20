@@ -1,29 +1,37 @@
-import { MdSpaceDashboard, MdInventory2 } from "react-icons/md";
-import { FaBox } from "react-icons/fa";
-import { TbReportSearch } from "react-icons/tb";
+import { HomeIcon } from "@/components/Icons/Home";
+import { AddIcon } from "@/components/Icons/Add";
+import { IssueIcon } from "@/components/Icons/Issue";
+import { ReportsIcon } from "@/components/Icons/Reports";
+import { InventoryIcon } from "@/components/Icons/Inventory";
 export const LinksArray = [
   {
     id: 1,
     path: "/",
     name: "Home",
-    icon: <MdSpaceDashboard />,
+    icon: <HomeIcon />,
   },
   {
     id: 2,
-    path: "/add",
-    name: "Add Item",
-    icon: <MdInventory2 />,
+    path: "/inventory",
+    name: "Inventory",
+    icon: <InventoryIcon />,
   },
   {
     id: 3,
-    path: "/issue",
-    name: "Issue",
-    icon: <FaBox />,
+    path: "/add",
+    name: "Add Item",
+    icon: <AddIcon />,
   },
   {
     id: 4,
+    path: "/issue",
+    name: "Issue",
+    icon: <IssueIcon />,
+  },
+  {
+    id: 5,
     path: "/reports",
     name: "Reports",
-    icon: <TbReportSearch />,
+    icon: <ReportsIcon />,
   },
 ];
