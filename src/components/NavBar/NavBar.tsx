@@ -3,7 +3,7 @@ import Links from "./Links";
 const NavBar = () => {
   return (
     <nav>
-      <div className="px-4 w-max">
+      <div className="px-4 w-[240px]">
         <Links />
       </div>
     </nav>
