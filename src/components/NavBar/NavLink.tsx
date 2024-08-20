@@ -11,7 +11,7 @@ const NavLink: React.FC<LinkType> = ({ id, name, path, icon }) => {
   return (
     <div
       className={clsx(
-        isActive(path) ? "bg-sky-200" : "hover:bg-sky-100",
+        isActive(path) ? "bg-teal-300" : "hover:bg-teal-100",
         "rounded-lg px-4 py-2 flex flex-row items-center ",
       )}
     >
