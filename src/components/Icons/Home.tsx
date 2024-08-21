@@ -19,7 +19,7 @@ export const HomeIcon = () => {
           strokeWidth="1.5"
           strokeLinecap="round"
         ></path>{" "}
-        <path d="M15 18H9" stroke-width="1.5" strokeLinecap="round"></path>{" "}
+        <path d="M15 18H9" strokeWidth="1.5" strokeLinecap="round"></path>{" "}
       </g>
     </svg>
   );
