@@ -1,11 +1,14 @@
+import UserBar from "../UserBar/UserBar";
+
 const TopBar = () => {
   return (
     <nav>
-      <div className="p-4 flex items-center">
+      <div className="p-4 flex items-center justify-between">
         <h1 className="font-bold text-xl">
           Sen
           <span className="text-teal-400">Ware</span>
         </h1>
+        <UserBar />
       </div>
     </nav>
   );
