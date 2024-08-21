@@ -2,11 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
-<<<<<<< HEAD
-import TopBar from "@/components/TopBar/TopBar";
-import NavBar from "@/components/NavBar/NavBar";
-=======
->>>>>>> 63fc9448f1d7b8c1a57499c96927faf93bc3236c
+// import TopBar from "@/components/TopBar/TopBar";
+// import NavBar from "@/components/NavBar/NavBar";
 
 const poppins = Poppins({
   subsets: ["latin"],
