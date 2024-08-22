@@ -38,10 +38,14 @@ const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(data).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      login(data)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        })
+        .catch((err) => {
+          setError(data.error);
+        });
     });
   };
 
