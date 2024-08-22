@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { LoginSchema } from "../../../schema";
+import { LoginSchema } from "@/schema";
 import { CardWrapper } from "./CardWrapper";
 
 type LoginFormData = z.infer<typeof LoginSchema>;

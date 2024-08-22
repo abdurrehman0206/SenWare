@@ -4,19 +4,19 @@ import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { LoginIcon } from "@/components/Icons/Login";
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { RegisterSchema } from "../../../schema";
+import { RegisterSchema } from "@/schema";
 import { CardWrapper } from "./CardWrapper";
 import { register } from "@/actions/register";
 

@@ -1,7 +1,10 @@
+import { auth } from "@/auth";
 import { LogoIcon } from "../Icons/Logo";
 import UserBar from "../UserBar/UserBar";
 
-const TopBar = () => {
+const TopBar = async () => {
+  const session = await auth();
+  console.log(session?.user);
   return (
     <nav>
       <div className="p-4 flex items-center justify-between">
