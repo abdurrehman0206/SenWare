@@ -44,7 +44,7 @@ const LoginForm = () => {
           setSuccess(data.success);
         })
         .catch((err) => {
-          setError(data.error);
+          setError(err.error);
         });
     });
   };
