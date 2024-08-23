@@ -2,8 +2,10 @@ import Image from "next/image";
 import { AvatarIcon } from "../Icons/Avatar";
 import { NotificationIcon } from "../Icons/Notification";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const UserBar = () => {
+import { auth } from "@/auth";
+const UserBar = async () => {
+  const session = await auth();
+  console.log(session?.user);
   return (
     <div className="flex flex-row items-center gap-5">
       <button className="cursor-pointer">
@@ -21,7 +23,7 @@ const UserBar = () => {
           <AvatarFallback>A</AvatarFallback>
         </Avatar>
 
-        <h5>Admin</h5>
+        <h5>{session?.user?.username}</h5>
       </span>
     </div>
   );
