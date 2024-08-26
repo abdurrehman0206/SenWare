@@ -49,6 +49,9 @@ import ListHeader from "./ListHeader";
 import Loading from "@/app/loading";
 import { deleteItem } from "@/actions/Item/deleteItem";
 import { ItemsContextProvider } from "@/context/ItemsContext";
+import { CopyIcon } from "@/components/Icons/Copy";
+import { NoteIcon } from "@/components/Icons/Note";
+import { UserCheckIcon } from "@/components/Icons/UserCheck";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -173,14 +176,22 @@ const ItemsList = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(item.id)}
               >
+                <CopyIcon className="w-4 h-4 stroke-black mr-1" />
                 Copy item ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem>
+                <NoteIcon className="w-4 h-4 stroke-black mr-1" />
+                View details
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
+                Issue Item
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
@@ -188,8 +199,8 @@ const ItemsList = () => {
                 }}
                 className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
               >
+                <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
                 Delete Item
-                <DeleteIcon className={"stroke-destructive w-4 h-4 ml-1"} />
               </DropdownMenuItem>
               <DropdownMenuSeparator />
             </DropdownMenuContent>
@@ -198,25 +209,6 @@ const ItemsList = () => {
       },
     },
   ];
-  // const fetchItems = async () => {
-  //   const response = await getItems();
-  //   if (response.error) {
-  //     setError(response.error);
-  //     setItems([]);
-  //   } else if (response.items) {
-  //     setItems(response.items);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   startTransition(() => {
-  //     fetchItems();
-  //   });
-  // }, []);
-
-  // const handleItemAdded = () => {
-  //   fetchItems();
-  // };
 
   const table = useReactTable({
     data: items,
@@ -340,10 +332,10 @@ const ItemsList = () => {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
+          {/*<div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
+          </div> */}
           <div className="space-x-2">
             <Button
               variant="outline"
