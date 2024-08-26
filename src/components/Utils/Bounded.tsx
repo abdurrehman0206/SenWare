@@ -8,7 +8,7 @@ const Bounded = ({
   className?: string;
 }) => {
   return (
-    <div className={clsx("bg-white rounded-md shadow-sm p-5", className)}>
+    <div className={clsx("bg-white rounded-xl shadow-sm p-5", className)}>
       {children}
     </div>
   );

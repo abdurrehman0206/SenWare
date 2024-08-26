@@ -62,11 +62,6 @@ export const ItemsContextProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  useEffect(() => {
-    if (state.items.length === 0) {
-      refreshItems();
-    }
-  }, [state.items]);
   return (
     <ItemsContext.Provider
       value={{ ...state, dispatch, isPending, error, refreshItems }}

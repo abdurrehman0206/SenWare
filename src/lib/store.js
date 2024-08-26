@@ -14,7 +14,7 @@ export const LinksArray = [
     id: 2,
     path: "/inventory",
     name: "Inventory",
-    icon: <InventoryIcon />,
+    icon: <InventoryIcon className={"h-6 w-6 stroke-black"} />,
   },
   {
     id: 3,

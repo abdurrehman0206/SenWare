@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddCategoryForm from "./AddCategoryForm";
+import { useItemsContext } from "@/hooks/useItemsContext";
 
 type CategoriesType = z.infer<typeof CategorySchema>;
 

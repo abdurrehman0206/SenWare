@@ -1,10 +1,15 @@
-import ItemsComponent from "@/components/Items/ItemsComponent";
+import ItemsList from "@/components/Items/ItemsList";
+import ItemsStatBar from "@/components/Items/ItemsStatBar";
+import { ItemsContextProvider } from "@/context/ItemsContext";
 
 const Inventory = () => {
   return (
-    <div>
-      <ItemsComponent />
-    </div>
+    <ItemsContextProvider>
+      <div className="flex flex-col gap-2">
+        <ItemsStatBar />
+        <ItemsList />
+      </div>
+    </ItemsContextProvider>
   );
 };
 export default Inventory;
