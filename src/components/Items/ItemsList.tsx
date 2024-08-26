@@ -30,6 +30,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -160,12 +172,16 @@ const ItemsList = () => {
       id: "actions",
       cell: ({ row }) => {
         const item = row.original;
+        const { refreshItems } = useItemsContext(); // Ensure the hook is used in the right scope
+
         const handleDelete = async (itemId: number) => {
-          await deleteItem(itemId).then((data) => {
-            if (data.success) {
-              refreshItems();
-            }
-          });
+          const response = await deleteItem(itemId);
+          if (response.success) {
+            refreshItems();
+          }
+        };
+        const handleAlertTriggerClick = (event: React.MouseEvent) => {
+          event.stopPropagation();
         };
         return (
           <DropdownMenu>
@@ -193,15 +209,40 @@ const ItemsList = () => {
                 Issue Item
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  handleDelete(item.id);
-                }}
-                className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
-              >
-                <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
-                Delete Item
-              </DropdownMenuItem>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
+                  >
+                    <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
+                    Delete Item
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the item from the inventory and remove any data from our
+                      servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="border-teal-200 text-teal-400 hover:bg-teal-400/10 hover:text-teal-400">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-teal-200 text-white hover:bg-teal-400"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <DropdownMenuSeparator />
             </DropdownMenuContent>
           </DropdownMenu>
