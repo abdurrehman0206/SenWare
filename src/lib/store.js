@@ -20,7 +20,7 @@ export const LinksArray = [
     id: 3,
     path: "/add",
     name: "Add Item",
-    icon: <AddIcon />,
+    icon: <AddIcon className={"h-6 w-6 stroke-black"} />,
   },
   {
     id: 4,

@@ -1,4 +1,5 @@
 "use client";
+import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -10,14 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ItemSchema } from "@/schema";
-import * as z from "zod";
-import { useState, useTransition } from "react";
-import { Button } from "../ui/button";
-import CategorySelector from "./CategorySelector";
-import { addItem } from "@/actions/Item/addItem";
+import { Button } from "@/components/ui/button";
 import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { FormError } from "@/components/FormInfo/FormError";
+import { ItemSchema } from "@/schema";
+import { useState, useTransition } from "react";
+import CategorySelector from "./CategorySelector";
+import { addItem } from "@/actions/Item/addItem";
 import { useItemsContext } from "@/hooks/useItemsContext";
 
 type ItemsFormData = z.infer<typeof ItemSchema>;
@@ -66,7 +66,13 @@ const AddItemForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={(e) => {
+          form.handleSubmit(onSubmit);
+          e.stopPropagation();
+        }}
+        className="space-y-6"
+      >
         <div className="space-x-2 grid grid-cols-2">
           <FormField
             control={form.control}
