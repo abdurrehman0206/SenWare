@@ -1,5 +1,5 @@
 "use client";
-import { login } from "@/actions/login";
+import { login } from "@/actions/Auth/login";
 import { FormError } from "@/components/FormInfo/FormError";
 import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { LoginIcon } from "@/components/Icons/Login";

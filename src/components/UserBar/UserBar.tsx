@@ -2,15 +2,23 @@ import Image from "next/image";
 import { AvatarIcon } from "../Icons/Avatar";
 import { NotificationIcon } from "../Icons/Notification";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { auth } from "@/auth";
 const UserBar = async () => {
   const session = await auth();
   console.log(session?.user);
   return (
     <div className="flex flex-row items-center gap-5">
-      <button className="cursor-pointer">
-        <NotificationIcon className={"h-6 w-6 stroke-black"} />
-      </button>
+      <HoverCard>
+        <HoverCardTrigger className="cursor-pointer">
+          <NotificationIcon className={"h-6 w-6 stroke-black"} />
+        </HoverCardTrigger>
+        <HoverCardContent className="mr-32">Test Notification</HoverCardContent>
+      </HoverCard>
       <span className="flex items-center gap-2">
         {/*<div className=" border rounded-full shadow-sm">
           <AvatarIcon className={"w-6 h-6 m-1 fill-teal-400"} />

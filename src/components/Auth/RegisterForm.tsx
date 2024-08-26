@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { RegisterSchema } from "@/schema";
 import { CardWrapper } from "./CardWrapper";
-import { register } from "@/actions/register";
+import { register } from "@/actions/Auth/register";
 
 type RegisterFormData = z.infer<typeof RegisterSchema>;
 

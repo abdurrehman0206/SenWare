@@ -1,4 +1,10 @@
+import ItemsList from "@/components/Items/ItemsList";
+
 const Inventory = () => {
-  return <div> </div>;
+  return (
+    <div>
+      <ItemsList />
+    </div>
+  );
 };
 export default Inventory;

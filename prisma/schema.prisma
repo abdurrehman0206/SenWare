@@ -30,6 +30,49 @@ model User {
   id       String    @id @default(cuid())
   username String    @unique
   password String
-  image    String?
   accounts Account[]
+}
+
+model Item {
+  id           Int        @id @default(autoincrement())
+  name         String
+  brand        String
+  barcode      String     @unique
+  vendor       String
+  price        Int
+  image        String?
+  quantity     Int        @default(0)
+  Category     Category   @relation(fields: [categoryName], references: [name])
+  categoryName String
+  Issuance     Issuance[]
+}
+
+model Category {
+  name        String  @id @unique
+  description String?
+  items       Item[]
+}
+
+model Branch {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  recipients Recipient[]
+}
+
+model Recipient {
+  id        Int        @id
+  name      String
+  branchId  Int
+  branch    Branch     @relation(fields: [branchId], references: [id])
+  issuances Issuance[]
+}
+
+model Issuance {
+  id          Int       @id @default(autoincrement())
+  itemId      Int
+  item        Item      @relation(fields: [itemId], references: [id])
+  recipientId Int
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
+  quantity    Int
+  issuedAt    DateTime  @default(now())
 }
