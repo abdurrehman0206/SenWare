@@ -33,6 +33,8 @@ const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
   });
 
   const handleCategorySubmit = (data: CategoryFormData) => {
+    setError("");
+    setSuccess("");
     startTransition(() => {
       addCategory(data).then((data) => {
         if (data.success) {
@@ -47,7 +49,10 @@ const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleCategorySubmit)}
+        onSubmit={(e) => {
+          form.handleSubmit(handleCategorySubmit)(e);
+          e.stopPropagation();
+        }}
         className="space-y-6"
       >
         <FormField

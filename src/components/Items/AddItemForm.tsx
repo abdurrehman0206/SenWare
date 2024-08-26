@@ -66,13 +66,7 @@ const AddItemForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={(e) => {
-          form.handleSubmit(onSubmit);
-          e.stopPropagation();
-        }}
-        className="space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-x-2 grid grid-cols-2">
           <FormField
             control={form.control}
