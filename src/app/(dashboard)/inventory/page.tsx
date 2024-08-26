@@ -1,9 +1,9 @@
-import ItemsList from "@/components/Items/ItemsList";
+import ItemsComponent from "@/components/Items/ItemsComponent";
 
 const Inventory = () => {
   return (
     <div>
-      <ItemsList />
+      <ItemsComponent />
     </div>
   );
 };

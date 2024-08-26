@@ -4,15 +4,16 @@ export const getAllItems = async () => {
   try {
     const items = await db.item.findMany();
     return items;
-  } catch {
-    return null;
+  } catch (error) {
+    throw error;
   }
 };
 
 export const deleteItemById = async (itemId: number) => {
   try {
-    await db.item.delete({ where: { id: itemId } });
-  } catch {
-    return null;
+    const item = await db.item.delete({ where: { id: itemId } });
+    return item;
+  } catch (error) {
+    throw error;
   }
 };

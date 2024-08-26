@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useItemsContext } from "@/hooks/useItemsContext";
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -46,6 +47,8 @@ import { DeleteIcon } from "@/components/Icons/Delete";
 import Bounded from "@/components/Utils/Bounded";
 import ListHeader from "./ListHeader";
 import Loading from "@/app/loading";
+import { deleteItem } from "@/actions/Item/deleteItem";
+import { ItemsContextProvider } from "@/context/ItemsContext";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -62,117 +65,10 @@ const SortButton = ({ column, headerName }: any) => {
   );
 };
 
-const columns: ColumnDef<any>[] = [
-  {
-    accessorKey: "id",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"ID"} />;
-    },
-  },
-  {
-    accessorKey: "name",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"Name"} />;
-    },
-  },
-  {
-    accessorKey: "brand",
-    header: "Brand",
-    enableSorting: false,
-  },
-  {
-    accessorKey: "barcode",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"Barcode"} />;
-    },
-  },
-  {
-    accessorKey: "vendor",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"Vendor"} />;
-    },
-  },
-  {
-    accessorKey: "price",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"Price"} />;
-    },
-    // cell: ({ row }) => {
-    //   const formatted = new Intl.NumberFormat("en-US", {
-    //     style: "currency",
-    //     currency: "PKR",
-    //   }).format(row.getValue("price"));
-    //   return <div className="text-right font-medium">{formatted}</div>;
-    // },
-  },
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-    enableSorting: true,
-  },
-  {
-    accessorKey: "categoryName",
-    enableSorting: true,
-    header: ({ column }) => {
-      return <SortButton column={column} headerName={"Category"} />;
-    },
-  },
-  {
-    accessorKey: "image",
-    header: "Image",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <div className="relative w-10 h-10 ring-teal-100 rounded-sm overflow-hidden shadow-sm">
-        <Image
-          src={row.getValue("image") || ""}
-          alt="item image"
-          fill={true}
-          className="object-cover"
-        />
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const item = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(item.id)}
-            >
-              Copy item ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View details</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus-visible:text-destructive">
-              Delete Item
-              <DeleteIcon className={"stroke-destructive w-4 h-4 ml-1"} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 const ItemsList = () => {
-  const [isPending, startTransition] = useTransition();
-  const [items, setItems] = useState<any[]>([]);
+  const { items, dispatch, isPending, refreshItems } = useItemsContext();
+  // const [isPending, startTransition] = useTransition();
+  // const [items, setItems] = useState<any[]>([]);
   const [error, setError] = useState<string | undefined>("");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -182,25 +78,145 @@ const ItemsList = () => {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const fetchItems = async () => {
-    const response = await getItems();
-    if (response.error) {
-      setError(response.error);
-      setItems([]);
-    } else if (response.items) {
-      setItems(response.items);
-    }
-  };
+  const columns: ColumnDef<any>[] = [
+    {
+      accessorKey: "id",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"ID"} />;
+      },
+    },
+    {
+      accessorKey: "name",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Name"} />;
+      },
+    },
+    {
+      accessorKey: "brand",
+      header: "Brand",
+      enableSorting: false,
+    },
+    {
+      accessorKey: "barcode",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Barcode"} />;
+      },
+    },
+    {
+      accessorKey: "vendor",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Vendor"} />;
+      },
+    },
+    {
+      accessorKey: "price",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Price"} />;
+      },
+      // cell: ({ row }) => {
+      //   const formatted = new Intl.NumberFormat("en-US", {
+      //     style: "currency",
+      //     currency: "PKR",
+      //   }).format(row.getValue("price"));
+      //   return <div className="text-right font-medium">{formatted}</div>;
+      // },
+    },
+    {
+      accessorKey: "quantity",
+      header: "Quantity",
+      enableSorting: true,
+    },
+    {
+      accessorKey: "categoryName",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Category"} />;
+      },
+    },
+    {
+      accessorKey: "image",
+      header: "Image",
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className="relative w-10 h-10 ring-teal-100 rounded-sm overflow-hidden shadow-sm">
+          <Image
+            src={row.getValue("image") || ""}
+            alt="item image"
+            fill={true}
+            className="object-cover"
+          />
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const item = row.original;
+        const handleDelete = async (itemId: number) => {
+          await deleteItem(itemId).then((data) => {
+            if (data.success) {
+              refreshItems();
+            }
+          });
+        };
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(item.id)}
+              >
+                Copy item ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  handleDelete(item.id);
+                }}
+                className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
+              >
+                Delete Item
+                <DeleteIcon className={"stroke-destructive w-4 h-4 ml-1"} />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+  // const fetchItems = async () => {
+  //   const response = await getItems();
+  //   if (response.error) {
+  //     setError(response.error);
+  //     setItems([]);
+  //   } else if (response.items) {
+  //     setItems(response.items);
+  //   }
+  // };
 
-  useEffect(() => {
-    startTransition(() => {
-      fetchItems();
-    });
-  }, []);
+  // useEffect(() => {
+  //   startTransition(() => {
+  //     fetchItems();
+  //   });
+  // }, []);
 
-  const handleItemAdded = () => {
-    fetchItems();
-  };
+  // const handleItemAdded = () => {
+  //   fetchItems();
+  // };
 
   const table = useReactTable({
     data: items,
@@ -221,7 +237,7 @@ const ItemsList = () => {
     },
     filterFns: {
       customFilter: (row, columnId, filterValue) => {
-        const value = row.getValue(columnId);
+        const value: string = row.getValue(columnId);
         return value
           ? value.toLowerCase().includes(filterValue.toLowerCase())
           : false;
@@ -272,7 +288,7 @@ const ItemsList = () => {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <ListHeader onItemAdded={handleItemAdded} />
+          <ListHeader />
         </div>
         <div className="rounded-md border">
           <Table>

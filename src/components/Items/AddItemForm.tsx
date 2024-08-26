@@ -18,13 +18,15 @@ import CategorySelector from "./CategorySelector";
 import { addItem } from "@/actions/Item/addItem";
 import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { FormError } from "@/components/FormInfo/FormError";
+import { useItemsContext } from "@/hooks/useItemsContext";
 
 type ItemsFormData = z.infer<typeof ItemSchema>;
 
-const AddItemForm = ({ onItemAdded }: { onItemAdded: () => void }) => {
+const AddItemForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const { refreshItems } = useItemsContext();
   const form = useForm<ItemsFormData>({
     resolver: zodResolver(ItemSchema),
     defaultValues: {
@@ -53,7 +55,7 @@ const AddItemForm = ({ onItemAdded }: { onItemAdded: () => void }) => {
           setSuccess(data.success);
           setError(data.error);
           if (data.success) {
-            onItemAdded();
+            refreshItems();
           }
         })
         .catch((err) => {
