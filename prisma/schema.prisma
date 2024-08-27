@@ -40,7 +40,7 @@ model Item {
   barcode      String     @unique
   vendor       String
   price        Int
-  image        String?
+  image        String
   quantity     Int        @default(0)
   Category     Category   @relation(fields: [categoryName], references: [name])
   categoryName String
@@ -48,23 +48,21 @@ model Item {
 }
 
 model Category {
-  name        String  @id @unique
-  description String?
-  items       Item[]
+  name  String @id @unique
+  items Item[]
 }
 
 model Branch {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
+  name       String      @id @unique
   recipients Recipient[]
 }
 
 model Recipient {
-  id        Int        @id
-  name      String
-  branchId  Int
-  branch    Branch     @relation(fields: [branchId], references: [id])
-  issuances Issuance[]
+  id         Int        @id
+  name       String
+  branchName String
+  issuances  Issuance[]
+  Branch     Branch     @relation(fields: [branchName], references: [name])
 }
 
 model Issuance {

@@ -42,22 +42,30 @@ export const ItemSchema = z.object({
 
 export const CategorySchema = z.object({
   name: z.string().min(1, { message: "Category name is required" }),
-  description: z.string().optional(),
 });
 
 export const BranchSchema = z.object({
-  id: z.number().int(),
   name: z.string().min(1, { message: "Branch name is required" }),
 });
 
 export const RecipientSchema = z.object({
+  id: z.coerce.number().int().nonnegative({ message: "Id cannot be negative" }),
   name: z.string().min(1, { message: "Recipient name is required" }),
-  branchId: z.number().int(),
+  branchName: z.string().min(1, { message: "Branch is required" }),
 });
 
 export const IssuanceSchema = z.object({
-  itemId: z.number().int(),
-  recipientId: z.number().int(),
-  quantity: z.number().int().positive({ message: "Quantity must be positive" }),
+  itemId: z.coerce
+    .number()
+    .int()
+    .nonnegative({ message: "ItemId cannot be negative" }),
+  recipientId: z.coerce
+    .number()
+    .int()
+    .nonnegative({ message: "RecipientId cannot be negative" }),
+  quantity: z.coerce
+    .number()
+    .int()
+    .positive({ message: "Quantity must be positive" }),
   issuedAt: z.date(),
 });

@@ -1,23 +1,23 @@
 "use server";
 import * as z from "zod";
-import { CategorySchema } from "@/schema";
+import { BranchSchema } from "@/schema";
 import { PrimsaCodeResponse } from "../../../prisma/PrismaCodeResponse";
 import { db } from "@/lib/db";
-type CategoryFormData = z.infer<typeof CategorySchema>;
-export const addCategory = async (data: CategoryFormData) => {
-  const validatedFields = CategorySchema.safeParse(data);
+type BranchFormData = z.infer<typeof BranchSchema>;
+export const addBranch = async (data: BranchFormData) => {
+  const validatedFields = BranchSchema.safeParse(data);
   if (!validatedFields.success) {
     return { error: "Invalid fields" };
   }
   const { name } = validatedFields.data;
 
   try {
-    await db.category.create({
+    await db.branch.create({
       data: {
         name,
       },
     });
-    return { success: "Category added successfully" };
+    return { success: "Branch added successfully" };
   } catch (error: any) {
     const errHandler = new PrimsaCodeResponse(error);
     return { error: errHandler.getErrorResponse().message };

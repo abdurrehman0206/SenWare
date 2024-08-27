@@ -15,27 +15,27 @@ import { Button } from "@/components/ui/button";
 import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { FormError } from "@/components/FormInfo/FormError";
 import { useTransition, useState } from "react";
-import { CategorySchema } from "@/schema";
-import { addCategory } from "@/actions/Category/addCategory";
+import { BranchSchema } from "@/schema";
+import { addBranch } from "@/actions/Branch/addBranch";
 
-type CategoryFormData = z.infer<typeof CategorySchema>;
+type BranchFormData = z.infer<typeof BranchSchema>;
 
-const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
+const AddBranchForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const form = useForm<CategoryFormData>({
-    resolver: zodResolver(CategorySchema),
+  const form = useForm<BranchFormData>({
+    resolver: zodResolver(BranchSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  const handleCategorySubmit = (data: CategoryFormData) => {
+  const handleBranchSubmit = (data: BranchFormData) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      addCategory(data).then((data) => {
+      addBranch(data).then((data) => {
         if (data.success) {
           setSuccess(data.success);
           flipTag();
@@ -49,7 +49,7 @@ const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
     <Form {...form}>
       <form
         onSubmit={(e) => {
-          form.handleSubmit(handleCategorySubmit)(e);
+          form.handleSubmit(handleBranchSubmit)(e);
           e.stopPropagation();
         }}
         className="space-y-6"
@@ -62,10 +62,10 @@ const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  id="name"
                   {...field}
+                  id="name"
                   type="text"
-                  placeholder="Category Name"
+                  placeholder="Branch Name"
                   className="focus-visible:ring-teal-400"
                   disabled={isPending}
                 />
@@ -82,11 +82,11 @@ const AddCategoryForm: React.FC<{ flipTag: () => void }> = ({ flipTag }) => {
           className="bg-teal-300 hover:bg-teal-400 w-full"
           disabled={isPending}
         >
-          Add Category
+          Add Branch
         </Button>
       </form>
     </Form>
   );
 };
 
-export default AddCategoryForm;
+export default AddBranchForm;

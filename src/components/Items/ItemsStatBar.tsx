@@ -1,5 +1,4 @@
 "use client";
-import { getCategoryCount } from "@/actions/Category/getCategoryCount";
 import { CategoryIcon } from "@/components/Icons/Category";
 import { MoneyBillIcon } from "@/components/Icons/MoneyBill";
 import { StorageIcon } from "@/components/Icons/Storage";

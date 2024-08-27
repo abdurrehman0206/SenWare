@@ -15,3 +15,8 @@ export interface ItemType {
   quantity: number;
   categoryName: string;
 }
+export interface RecipientType {
+  id: number;
+  name: string;
+  branchName: string;
+}

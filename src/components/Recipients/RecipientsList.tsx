@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useItemsContext } from "@/hooks/useItemsContext";
+import { useRecipientsContext } from "@/hooks/useRecipientsContext";
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -58,9 +58,7 @@ import { FormError } from "@/components/FormInfo/FormError";
 import { DeleteIcon } from "@/components/Icons/Delete";
 import Bounded from "@/components/Utils/Bounded";
 import ListHeader from "./ListHeader";
-import Loading from "@/app/loading";
-import { deleteItem } from "@/actions/Item/deleteItem";
-import { ItemsContextProvider } from "@/context/ItemsContext";
+import { deleteRecipient } from "@/actions/Recipient/deleteRecipient";
 import { CopyIcon } from "@/components/Icons/Copy";
 import { NoteIcon } from "@/components/Icons/Note";
 import { UserCheckIcon } from "@/components/Icons/UserCheck";
@@ -80,8 +78,9 @@ const SortButton = ({ column, headerName }: any) => {
   );
 };
 
-const ItemsList = () => {
-  const { items, dispatch, isPending, refreshItems } = useItemsContext();
+const RecipientsList = () => {
+  const { recipients, dispatch, isPending, refreshRecipients } =
+    useRecipientsContext();
   // const [isPending, startTransition] = useTransition();
   // const [items, setItems] = useState<any[]>([]);
   const [error, setError] = useState<string | undefined>("");
@@ -109,73 +108,21 @@ const ItemsList = () => {
       },
     },
     {
-      accessorKey: "brand",
-      header: "Brand",
-      enableSorting: false,
-    },
-    {
-      accessorKey: "barcode",
+      accessorKey: "branchName",
       enableSorting: true,
       header: ({ column }) => {
-        return <SortButton column={column} headerName={"Barcode"} />;
+        return <SortButton column={column} headerName={"Branch"} />;
       },
     },
-    {
-      accessorKey: "vendor",
-      enableSorting: true,
-      header: ({ column }) => {
-        return <SortButton column={column} headerName={"Vendor"} />;
-      },
-    },
-    {
-      accessorKey: "price",
-      enableSorting: true,
-      header: ({ column }) => {
-        return <SortButton column={column} headerName={"Price"} />;
-      },
-      // cell: ({ row }) => {
-      //   const formatted = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "PKR",
-      //   }).format(row.getValue("price"));
-      //   return <div className="text-right font-medium">{formatted}</div>;
-      // },
-    },
-    {
-      accessorKey: "quantity",
-      header: "Quantity",
-      enableSorting: true,
-    },
-    {
-      accessorKey: "categoryName",
-      enableSorting: true,
-      header: ({ column }) => {
-        return <SortButton column={column} headerName={"Category"} />;
-      },
-    },
-    {
-      accessorKey: "image",
-      header: "Image",
-      enableSorting: false,
-      cell: ({ row }) => (
-        <div className="relative w-10 h-10 ring-teal-100 rounded-sm overflow-hidden shadow-sm">
-          <Image
-            src={row.getValue("image") || ""}
-            alt="item image"
-            fill={true}
-            className="object-cover"
-          />
-        </div>
-      ),
-    },
+
     {
       id: "actions",
       cell: ({ row }) => {
-        const item = row.original;
-        const handleDelete = async (itemId: number) => {
-          const response = await deleteItem(itemId);
+        const recipient = row.original;
+        const handleDelete = async (recipientId: number) => {
+          const response = await deleteRecipient(recipientId);
           if (response.success) {
-            refreshItems();
+            refreshRecipients();
           }
         };
         const handleAlertTriggerClick = (event: React.MouseEvent) => {
@@ -191,20 +138,10 @@ const ItemsList = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(item.id)}
+                onClick={() => navigator.clipboard.writeText(recipient.id)}
               >
                 <CopyIcon className="w-4 h-4 stroke-black mr-1" />
-                Copy item ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <NoteIcon className="w-4 h-4 stroke-black mr-1" />
-                View details
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
-                Issue Item
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AlertDialog>
@@ -214,7 +151,7 @@ const ItemsList = () => {
                     className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
                   >
                     <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
-                    Delete Item
+                    Delete Recipient
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -224,8 +161,7 @@ const ItemsList = () => {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      the item from the inventory and remove any data from our
-                      servers.
+                      the recipient from the database.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -234,13 +170,13 @@ const ItemsList = () => {
                     </AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-teal-200 text-white hover:bg-teal-400"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(recipient.id)}
                     >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog>
+              </AlertDialog>   
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -249,7 +185,7 @@ const ItemsList = () => {
   ];
 
   const table = useReactTable({
-    data: items,
+    data: recipients,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -408,4 +344,4 @@ const ItemsList = () => {
   );
 };
 
-export default ItemsList;
+export default RecipientsList;
