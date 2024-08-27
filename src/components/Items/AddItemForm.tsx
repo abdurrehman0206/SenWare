@@ -21,7 +21,7 @@ import { addItem } from "@/actions/Item/addItem";
 import { useItemsContext } from "@/hooks/useItemsContext";
 
 type ItemsFormData = z.infer<typeof ItemSchema>;
-
+import { toast } from "sonner";
 const AddItemForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -52,10 +52,13 @@ const AddItemForm = () => {
     startTransition(() => {
       addItem(formData)
         .then((data) => {
-          setSuccess(data.success);
-          setError(data.error);
           if (data.success) {
+            setSuccess(data.success);
+            toast.success(data.success);
             refreshItems();
+          } else {
+            setError(data.error);
+            toast.error(data.error);
           }
         })
         .catch((err) => {

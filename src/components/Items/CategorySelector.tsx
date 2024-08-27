@@ -1,5 +1,8 @@
-import React, { useState, useEffect, forwardRef } from "react";
+"use client";
+import React, { useState, useEffect, forwardRef, useTransition } from "react";
 import { getCategories } from "@/actions/Category/getCategories";
+import { toast } from "sonner";
+
 import {
   Select,
   SelectContent,
@@ -22,12 +25,16 @@ import {
 } from "@/components/ui/dialog";
 import AddCategoryForm from "./AddCategoryForm";
 import { useItemsContext } from "@/hooks/useItemsContext";
+import { DeleteIcon } from "@/components/Icons/Delete";
+import { deleteCategory } from "@/actions/Category/deleteCategory";
+import { Button } from "@/components/ui/button";
 
 type CategoriesType = z.infer<typeof CategorySchema>;
 
 const CategorySelector = forwardRef(({ value, onChange, ...props }, ref) => {
   const [categories, setCategories] = useState<CategoriesType[]>([]);
   const [tag, setTag] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -42,7 +49,17 @@ const CategorySelector = forwardRef(({ value, onChange, ...props }, ref) => {
 
     fetchCategories();
   }, [tag]);
-
+  const handleCategoryDelete = (categoryName: string) => {
+    startTransition(() => {
+      deleteCategory(categoryName).then((data) => {
+        if (data.success) {
+          setTag((prev) => !prev);
+        } else {
+          toast.error(data.error);
+        }
+      });
+    });
+  };
   return (
     <Select value={value} onValueChange={onChange} {...props}>
       <SelectTrigger ref={ref} className="focus:ring-teal-400">
@@ -51,9 +68,25 @@ const CategorySelector = forwardRef(({ value, onChange, ...props }, ref) => {
       <SelectContent>
         <SelectGroup>
           {categories.map((category) => (
-            <SelectItem key={category.name} value={category.name.toString()}>
-              {category.name}
-            </SelectItem>
+            <div
+              key={category.name}
+              className="flex justify-between items-center hover:bg-teal-400/5 "
+            >
+              <SelectItem
+                key={category.name}
+                value={category.name.toString()}
+                className="focus:bg-transparent"
+              >
+                {category.name}
+              </SelectItem>
+              <Button
+                className="bg-transparent hover:bg-transparent shadow-none p-0 h-max rounded-xl"
+                onClick={() => handleCategoryDelete(category.name)}
+                disabled={isPending}
+              >
+                <DeleteIcon className="w-5 h-5 stroke-destructive hover:stroke-transparent hover:fill-destructive/90" />
+              </Button>
+            </div>
           ))}
           <Dialog>
             <DialogTrigger asChild>

@@ -25,7 +25,6 @@ export const addItem = async (formData: FormData) => {
     image: formData.get("image"),
   };
   const validatedFields = ItemSchema.safeParse(data);
-  console.log(validatedFields);
   if (!validatedFields.success) {
     return { error: "Invalid fields" };
   }
@@ -53,6 +52,7 @@ export const addItem = async (formData: FormData) => {
     });
     return { success: "Item added successfully" };
   } catch (error: any) {
+    console.log(error);
     const errHandler = new PrimsaCodeResponse(error);
     return { error: errHandler.getErrorResponse().message };
   }

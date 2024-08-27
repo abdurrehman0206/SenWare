@@ -6,6 +6,19 @@ export const getAllCategories = async () => {
     return categories;
   } catch (error) {
     console.log("Category Error", error);
-    return null;
+    throw error;
+  }
+};
+
+export const deleteCategoryByName = async (categoryName: string) => {
+  try {
+    await db.category.delete({
+      where: {
+        name: categoryName,
+      },
+    });
+  } catch (error) {
+    console.log("Category Error", error);
+    throw error;
   }
 };
