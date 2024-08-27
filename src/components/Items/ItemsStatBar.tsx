@@ -35,7 +35,7 @@ const ItemsStatBar = () => {
   }, [items]);
   return (
     <Bounded>
-      <div className="flex flex-row gap-2 w-full">
+      <div className="flex flex-row gap-2 w-full flex-wrap">
         <StatCard
           statHeader={{
             text: "Total Items",

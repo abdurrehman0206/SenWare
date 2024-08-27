@@ -262,6 +262,12 @@ const ItemsList = () => {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 9,
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -282,8 +288,8 @@ const ItemsList = () => {
   }
   return (
     <Bounded>
-      <div className="w-full">
-        <div className="flex items-center py-4">
+      <div className="w-full space-y-3">
+        <div className="flex items-center ">
           <Input
             placeholder="Filter items..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -377,6 +383,9 @@ const ItemsList = () => {
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div> */}
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredRowModel().rows.length} row(s)
+          </div>
           <div className="space-x-2">
             <Button
               variant="outline"

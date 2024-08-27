@@ -3,8 +3,8 @@ import Logout from "./Logout";
 
 const NavBar = () => {
   return (
-    <nav className="px-4 flex flex-col">
-      <div className=" w-[240px]">
+    <nav className="px-4 flex flex-col w-[280px]">
+      <div className=" ">
         <Links />
       </div>
       <Logout />
