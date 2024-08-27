@@ -13,6 +13,7 @@ export interface ItemType {
   price: number;
   image: string;
   quantity: number;
+  issued: number;
   categoryName: string;
 }
 export interface RecipientType {

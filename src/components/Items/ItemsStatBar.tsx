@@ -7,17 +7,19 @@ import Bounded from "@/components/Utils/Bounded";
 import { useItemsContext } from "@/hooks/useItemsContext";
 import { useEffect, useState, useMemo } from "react";
 import { InventoryIcon } from "../Icons/Inventory";
+import { IssueIcon } from "../Icons/Issue";
 
 const ItemsStatBar = () => {
-
   const { items } = useItemsContext();
   const statCount = useMemo(() => {
     let totalRevenue = 0;
     let totalQuantity = 0;
+    let totalIssued = 0;
     const categories = new Set<string>();
 
-    items.forEach(({ quantity, price, categoryName }) => {
+    items.forEach(({ quantity, price, categoryName, issued }) => {
       totalQuantity += quantity;
+      totalIssued += issued;
       totalRevenue += quantity * price;
       categories.add(categoryName);
     });
@@ -25,6 +27,7 @@ const ItemsStatBar = () => {
     return {
       totalItems: items.length,
       totalQuantity,
+      totalIssued,
       totalRevenue,
       totalCategories: categories.size,
     };
@@ -47,6 +50,14 @@ const ItemsStatBar = () => {
           }}
           statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
           statCount={statCount.totalQuantity || 0}
+        />
+        <StatCard
+          statHeader={{
+            text: "Items Issued",
+            className: "font-semibold text-rose-400",
+          }}
+          statIcon={<IssueIcon className={"w-6 h-6 stroke-rose-400"} />}
+          statCount={statCount.totalIssued || 0}
         />
         <StatCard
           statHeader={{

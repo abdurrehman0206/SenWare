@@ -36,7 +36,6 @@ const IssueItemForm = ({ itemId }: { itemId: number }) => {
   });
 
   const onSubmit = (data: IssuanceFormData) => {
-    console.log(data);
     setError("");
     setSuccess("");
     startTransition(() => {
