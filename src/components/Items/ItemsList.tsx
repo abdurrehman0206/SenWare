@@ -44,6 +44,14 @@ import {
 
 import { Input } from "@/components/ui/input";
 import {
+  Dialog,
+  DialogClose,
+  DialogTitle,
+  DialogFooter,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -64,6 +72,7 @@ import { ItemsContextProvider } from "@/context/ItemsContext";
 import { CopyIcon } from "@/components/Icons/Copy";
 import { NoteIcon } from "@/components/Icons/Note";
 import { UserCheckIcon } from "@/components/Icons/UserCheck";
+import IssueItemForm from "./IssueItemForm";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -147,6 +156,11 @@ const ItemsList = () => {
       enableSorting: true,
     },
     {
+      accessorKey: "issued",
+      header: "Issued",
+      enableSorting: true,
+    },
+    {
       accessorKey: "categoryName",
       enableSorting: true,
       header: ({ column }) => {
@@ -202,10 +216,20 @@ const ItemsList = () => {
                 View details
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
-                Issue Item
-              </DropdownMenuItem>
+
+              <Dialog>
+                <DialogTrigger asChild onSelect={(e) => e.preventDefault()}>
+                  <DropdownMenuItem>
+                    <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
+                    Issue Item
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent className="min-w-[800px]">
+                  <DialogTitle className="m-auto">Issue Item</DialogTitle>
+                <IssueItemForm itemId={item.id}/>
+                </DialogContent>
+              </Dialog>
+
               <DropdownMenuSeparator />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

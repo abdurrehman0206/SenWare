@@ -37,6 +37,11 @@ export const ItemSchema = z.object({
     .number()
     .int()
     .nonnegative({ message: "Quantity cannot be negative" }),
+  issued: z.coerce
+    .number()
+    .int()
+    .nonnegative({ message: "Issued cannot be negative" })
+    .optional(),
   categoryName: z.string().min(1, { message: "Category is required" }),
 });
 
@@ -58,14 +63,15 @@ export const IssuanceSchema = z.object({
   itemId: z.coerce
     .number()
     .int()
-    .nonnegative({ message: "ItemId cannot be negative" }),
+    .positive({ message: "ItemId cannot be negative" })
+    .optional(),
   recipientId: z.coerce
     .number()
     .int()
-    .nonnegative({ message: "RecipientId cannot be negative" }),
+    .positive({ message: "RecipientId cannot be negative" }),
   quantity: z.coerce
     .number()
     .int()
     .positive({ message: "Quantity must be positive" }),
-  issuedAt: z.date(),
+  issuedAt: z.date().optional(),
 });

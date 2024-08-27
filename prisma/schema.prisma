@@ -42,6 +42,7 @@ model Item {
   price        Int
   image        String
   quantity     Int        @default(0)
+  issued       Int        @default(0)
   Category     Category   @relation(fields: [categoryName], references: [name])
   categoryName String
   Issuance     Issuance[]
@@ -68,9 +69,9 @@ model Recipient {
 model Issuance {
   id          Int       @id @default(autoincrement())
   itemId      Int
-  item        Item      @relation(fields: [itemId], references: [id])
   recipientId Int
-  recipient   Recipient @relation(fields: [recipientId], references: [id])
   quantity    Int
   issuedAt    DateTime  @default(now())
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
+  item        Item      @relation(fields: [itemId], references: [id])
 }

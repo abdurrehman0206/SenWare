@@ -52,7 +52,6 @@ export const addItem = async (formData: FormData) => {
     });
     return { success: "Item added successfully" };
   } catch (error: any) {
-    console.log(error);
     const errHandler = new PrimsaCodeResponse(error);
     return { error: errHandler.getErrorResponse().message };
   }

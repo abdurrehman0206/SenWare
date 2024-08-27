@@ -124,7 +124,7 @@ const AddRecipientForm = () => {
           className="bg-teal-300 hover:bg-teal-400 w-full"
           disabled={isPending}
         >
-          Add Item
+          Add Recipient
         </Button>
       </form>
     </Form>
