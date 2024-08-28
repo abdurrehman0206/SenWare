@@ -196,6 +196,9 @@ const ItemsList = () => {
       header: ({ column }) => {
         return <SortButton column={column} headerName={"Status"} />;
       },
+      cell: ({ row }) => {
+        const item = row.original;
+      },
     },
     {
       id: "actions",

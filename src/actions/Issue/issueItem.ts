@@ -26,7 +26,7 @@ export const issueItem = async (data: IssuanceFormData) => {
     }
     await db.issuance.create({
       data: {
-        itemId,
+        itemId: itemId as number,
         recipientId,
         quantity,
       },
