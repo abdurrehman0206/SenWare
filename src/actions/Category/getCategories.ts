@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 export const getCategories = async () => {
   try {
     const categories = await getAllCategories();
-    return categories;
+    return { categories };
   } catch (error) {
     return { error: error };
   }

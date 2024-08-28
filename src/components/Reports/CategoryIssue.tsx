@@ -56,7 +56,7 @@ const CategoryIssueChart = () => {
     setHighestIssuedCat(highestIssuedCategory);
     setChartData(formattedChartData);
   }, [items]);
-  console.log(chartData);
+
   return (
     <Bounded className="w-[500px]">
       <Card>

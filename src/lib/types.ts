@@ -29,6 +29,7 @@ export interface IssuanceType {
   recipientName: string;
   recipientBranchName: string;
   quantityIssued: number;
+  itemId: number;
   itemName: string;
   itemBarcode: string;
   itemImage: string;
