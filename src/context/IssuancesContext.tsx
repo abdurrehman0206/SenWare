@@ -18,10 +18,10 @@ interface Action {
   type: "SET_ISSUANCES" | "ISSUANCES_REFRESH";
   payload?: IssuanceType[];
 }
-export const issuancesReducer = (state: State, action: Action) => {
+export const issuancesReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_ISSUANCES":
-      return { issuances: action.payload };
+      return { issuances: action.payload ?? [] };
     case "ISSUANCES_REFRESH":
       return state;
     default:

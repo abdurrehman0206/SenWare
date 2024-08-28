@@ -18,10 +18,10 @@ interface Action {
   type: "SET_ITEMS" | "ITEM_REFRESH";
   payload?: ItemType[];
 }
-export const itemsReducer = (state: State, action: Action) => {
+export const itemsReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_ITEMS":
-      return { items: action.payload };
+      return { items: action.payload ?? [] };
     case "ITEM_REFRESH":
       return state;
     default:

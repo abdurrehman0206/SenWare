@@ -18,10 +18,10 @@ interface Action {
   type: "SET_RECIPIENTS" | "RECIPIENT_REFRESH";
   payload?: RecipientType[];
 }
-export const recipientsReducer = (state: State, action: Action) => {
+export const recipientsReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_RECIPIENTS":
-      return { recipients: action.payload };
+      return { recipients: action.payload ?? [] };
     case "RECIPIENT_REFRESH":
       return state;
     default:
