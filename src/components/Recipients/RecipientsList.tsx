@@ -118,6 +118,7 @@ const RecipientsList = () => {
       id: "actions",
       cell: ({ row }) => {
         const recipient = row.original;
+        console.log(recipient);
         const handleDelete = async (recipientId: number) => {
           const response = await deleteRecipient(recipientId);
           if (response.success) {

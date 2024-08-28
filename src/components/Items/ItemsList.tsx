@@ -198,12 +198,46 @@ const ItemsList = () => {
       },
       cell: ({ row }) => {
         const item = row.original;
+        const PillItem = () => {
+          if (item.quantity > item.issued && item.quantity - item.issued > 20) {
+            return (
+              <div className="bg-emerald-400/10 text-emerald-400 rounded-full py-1 px-2 text-xs">
+                In Stock
+              </div>
+            );
+          } else if (
+            item.quantity > item.issued &&
+            item.quantity - item.issued <= 20
+          ) {
+            return (
+              <div className="bg-purple-400/10 text-purple-400 rounded-full py-1 px-2 text-xs">
+                Low Stock
+              </div>
+            );
+          } else if (
+            item.quantity === item.issued ||
+            item.quantity < item.issued
+          ) {
+            return (
+              <div className="bg-destructive/10 text-destructive rounded-full py-1 px-2 text-xs">
+                Out Of Stock
+              </div>
+            );
+          }
+        };
+        return (
+          <div className="flex text-nowrap">
+            <PillItem />
+          </div>
+        );
       },
     },
     {
       id: "actions",
       cell: ({ row }) => {
         const item = row.original;
+        const isAvailable: boolean = item.quantity > item.issued;
+        const isIssued: boolean = item.issued > 0;
         const handleDelete = async (itemId: number) => {
           const response = await deleteItem(itemId);
           if (response.success) {
@@ -236,56 +270,65 @@ const ItemsList = () => {
                 <NoteIcon className="w-4 h-4 stroke-black mr-1" />
                 View details
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {isAvailable && (
+                <>
+                  <DropdownMenuSeparator />
+                  <Dialog>
+                    <DialogTrigger asChild onSelect={(e) => e.preventDefault()}>
+                      <DropdownMenuItem>
+                        <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
+                        Issue Item
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent className="min-w-[800px]">
+                      <DialogTitle className="m-auto">Issue Item</DialogTitle>
+                      <IssueItemForm itemId={item.id} />
+                    </DialogContent>
+                  </Dialog>
+                </>
+              )}
 
-              <Dialog>
-                <DialogTrigger asChild onSelect={(e) => e.preventDefault()}>
-                  <DropdownMenuItem>
-                    <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
-                    Issue Item
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogContent className="min-w-[800px]">
-                  <DialogTitle className="m-auto">Issue Item</DialogTitle>
-                  <IssueItemForm itemId={item.id} />
-                </DialogContent>
-              </Dialog>
-
-              <DropdownMenuSeparator />
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem
-                    onSelect={(e) => e.preventDefault()}
-                    className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
-                  >
-                    <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
-                    Delete Item
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      the item from the inventory and remove any data from our
-                      servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="border-teal-200 text-teal-400 hover:bg-teal-400/10 hover:text-teal-400">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      className="bg-teal-200 text-white hover:bg-teal-400"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {!isIssued && (
+                <>
+                  <DropdownMenuSeparator />
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
+                      >
+                        <DeleteIcon
+                          className={"stroke-destructive w-4 h-4 mr-1"}
+                        />
+                        Delete Item
+                      </DropdownMenuItem>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete the item from the inventory and remove any data
+                          from our servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="border-teal-200 text-teal-400 hover:bg-teal-400/10 hover:text-teal-400">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-teal-200 text-white hover:bg-teal-400"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -195,6 +195,8 @@ const IssuanceList = () => {
       id: "actions",
       cell: ({ row }) => {
         const issuance = row.original;
+        const isReturned: boolean = issuance.returned;
+ 
         const handleDelete = async (issuanceId: number) => {
           const response = await deleteIssuance(issuanceId);
           if (response.success) {
@@ -233,49 +235,59 @@ const IssuanceList = () => {
                 <CopyIcon className="w-4 h-4 stroke-black mr-1" />
                 Copy ID
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleReturn(issuance.id)}
-                className="bg-emerald-400/10 text-emerald-400 focus:bg-emerald-400/20 focus:text-emerald-400"
-              >
-                <CheckIcon className="w-4 h-4 stroke-emerald-400 mr-1" />
-                Mark Returned
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
+              {!isReturned && (
+                <>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onSelect={(e) => e.preventDefault()}
-                    className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
+                    onClick={() => handleReturn(issuance.id)}
+                    className="bg-emerald-400/10 text-emerald-400 focus:bg-emerald-400/20 focus:text-emerald-400"
                   >
-                    <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
-                    Delete Issuance
+                    <CheckIcon className="w-4 h-4 stroke-emerald-400 mr-1" />
+                    Mark Returned
                   </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      the issuance record from the database and mark the item as
-                      returned.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="border-teal-200 text-teal-400 hover:bg-teal-400/10 hover:text-teal-400">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      className="bg-teal-200 text-white hover:bg-teal-400"
-                      onClick={() => handleDelete(issuance.id)}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                </>
+              )}
+              {isReturned && (
+                <>
+                  <DropdownMenuSeparator />
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
+                      >
+                        <DeleteIcon
+                          className={"stroke-destructive w-4 h-4 mr-1"}
+                        />
+                        Delete Issuance
+                      </DropdownMenuItem>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete the issuance record from the database and mark
+                          the item as returned.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="border-teal-200 text-teal-400 hover:bg-teal-400/10 hover:text-teal-400">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-teal-200 text-white hover:bg-teal-400"
+                          onClick={() => handleDelete(issuance.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );
