@@ -190,7 +190,13 @@ const ItemsList = () => {
         </div>
       ),
     },
+    {
+      id: "status",
 
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Status"} />;
+      },
+    },
     {
       id: "actions",
       cell: ({ row }) => {
