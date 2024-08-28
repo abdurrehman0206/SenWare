@@ -13,12 +13,13 @@ const UserBar = async () => {
   console.log(session?.user);
   return (
     <div className="flex flex-row items-center gap-5">
-      <HoverCard>
-        <HoverCardTrigger className="cursor-pointer">
-          <NotificationIcon className={"h-6 w-6 stroke-black"} />
-        </HoverCardTrigger>
-        <HoverCardContent className="mr-32">Test Notification</HoverCardContent>
-      </HoverCard>
+      {/*
+  <HoverCard>
+    <HoverCardTrigger className="cursor-pointer">
+      <NotificationIcon className={"h-6 w-6 stroke-black"} />
+    </HoverCardTrigger>
+    <HoverCardContent className="mr-32">Test Notification</HoverCardContent>
+  </HoverCard> */}
       <span className="flex items-center gap-2">
         {/*<div className=" border rounded-full shadow-sm">
           <AvatarIcon className={"w-6 h-6 m-1 fill-teal-400"} />

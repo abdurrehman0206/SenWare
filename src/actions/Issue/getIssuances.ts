@@ -7,6 +7,7 @@ export const getIssuances = async () => {
     const issuances = await getAllIssuances();
     const formattedIssuances = issuances.map((issuance) => ({
       id: issuance.id,
+      itemId: issuance.itemId,
       recipientId: issuance.recipientId,
       recipientName: issuance.recipient.name,
       recipientBranchName: issuance.recipient.branchName,
