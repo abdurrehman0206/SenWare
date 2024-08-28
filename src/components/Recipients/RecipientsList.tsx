@@ -62,6 +62,7 @@ import { deleteRecipient } from "@/actions/Recipient/deleteRecipient";
 import { CopyIcon } from "@/components/Icons/Copy";
 import { NoteIcon } from "@/components/Icons/Note";
 import { UserCheckIcon } from "@/components/Icons/UserCheck";
+import { toast } from "sonner";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -81,8 +82,6 @@ const SortButton = ({ column, headerName }: any) => {
 const RecipientsList = () => {
   const { recipients, dispatch, isPending, refreshRecipients } =
     useRecipientsContext();
-  // const [isPending, startTransition] = useTransition();
-  // const [items, setItems] = useState<any[]>([]);
   const [error, setError] = useState<string | undefined>("");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -122,7 +121,10 @@ const RecipientsList = () => {
         const handleDelete = async (recipientId: number) => {
           const response = await deleteRecipient(recipientId);
           if (response.success) {
+            toast.success(response.success);
             refreshRecipients();
+          } else {
+            toast.error(response.error);
           }
         };
         const handleAlertTriggerClick = (event: React.MouseEvent) => {
@@ -176,7 +178,7 @@ const RecipientsList = () => {
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog>   
+              </AlertDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -235,7 +237,7 @@ const RecipientsList = () => {
             <DropdownMenuTrigger asChild className="mr-2">
               <Button
                 variant="outline"
-                className="ml-auto ring-neutral-200 border-teal-200 hover:bg-teal-400/10"
+                className="ml-auto ring-neutral-200 border-teal-200 hover:bg-teal-400/10 text-teal-400 hover:text-teal-400"
               >
                 Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
               </Button>
