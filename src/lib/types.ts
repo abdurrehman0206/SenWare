@@ -31,6 +31,7 @@ export interface IssuanceType {
   itemName: string;
   itemBarcode: string;
   itemImage: string;
+  itemPrice: number;
   issuedAt: string;
   returned: boolean;
 }

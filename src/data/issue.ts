@@ -15,6 +15,7 @@ export const getAllIssuances = async () => {
             name: true,
             barcode: true,
             image: true,
+            price: true,
           },
         },
       },

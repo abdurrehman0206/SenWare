@@ -14,6 +14,7 @@ export const getIssuances = async () => {
       itemName: issuance.item.name,
       itemBarcode: issuance.item.barcode,
       itemImage: issuance.item.image,
+      itemPrice: issuance.item.price,
       issuedAt: new Date(issuance.issuedAt).toLocaleString(),
       returned: issuance.returned,
     }));
