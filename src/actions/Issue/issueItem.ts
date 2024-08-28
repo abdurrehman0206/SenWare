@@ -4,7 +4,7 @@ import { IssuanceSchema } from "@/schema";
 import * as z from "zod";
 import { PrimsaCodeResponse } from "../../../prisma/PrismaCodeResponse";
 import { db } from "@/lib/db";
-import { updateItemIssueCountById } from "@/data/item";
+import { checkQuantity, updateItemIssueCountById } from "@/data/item";
 import { recipientExists } from "@/data/recipient";
 type IssuanceFormData = z.infer<typeof IssuanceSchema>;
 
@@ -18,7 +18,12 @@ export const issueItem = async (data: IssuanceFormData) => {
   if (!(await recipientExists(recipientId))) {
     return { error: "Recipient does not exists" };
   }
+
   try {
+    const isEnough = await checkQuantity(itemId as number, quantity);
+    if (!isEnough) {
+      return { error: "Not enough quantity available" };
+    }
     await db.issuance.create({
       data: {
         itemId,
@@ -26,7 +31,7 @@ export const issueItem = async (data: IssuanceFormData) => {
         quantity,
       },
     });
-    await updateItemIssueCountById(itemId as number, quantity , "add");
+    await updateItemIssueCountById(itemId as number, quantity, "add");
     return { success: "Item issued successfully" };
   } catch (error) {
     const errHandler = new PrimsaCodeResponse(error);

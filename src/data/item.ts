@@ -26,7 +26,10 @@ export const updateItemIssueCountById = async (
   mode: "add" | "remove",
 ) => {
   try {
-    const itemToUpdate = await db.item.findUnique({ where: { id: itemId } });
+    const itemToUpdate = await db.item.findUnique({
+      where: { id: itemId },
+      select: { issued: true },
+    });
     if (itemToUpdate) {
       let totalIssuedQuantity = itemToUpdate.issued;
       if (mode === "add") {
@@ -41,6 +44,32 @@ export const updateItemIssueCountById = async (
       });
     } else {
       throw new Error("Failed to issue");
+    }
+  } catch (error) {
+    console.log("Item Error", error);
+    throw error;
+  }
+};
+
+export const checkQuantity = async (
+  itemId: number,
+  quantityToIssue: number,
+) => {
+  try {
+    const item = await db.item.findUnique({
+      where: { id: itemId },
+      select: {
+        quantity: true,
+        issued: true,
+      },
+    });
+    if (item) {
+      if (item.issued + quantityToIssue > item.quantity) {
+        return false;
+      }
+      return true;
+    } else {
+      throw new Error("Failed to check item");
     }
   } catch (error) {
     console.log("Item Error", error);

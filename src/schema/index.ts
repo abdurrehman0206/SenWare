@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { zfd } from "zod-form-data";
+// import { zfd } from "zod-form-data";
 export const LoginSchema = z.object({
   username: z.string().min(5, { message: "Username is Required" }),
   password: z.string().min(5, { message: "Password is Required" }),
@@ -21,22 +21,22 @@ export const ItemSchema = z.object({
   price: z.coerce
     .number()
     .int()
-    .nonnegative({ message: "Price cannot be negative" }),
-  image: zfd
-    .file()
-    .refine((file) => file.size < 5000000, {
-      message: "File can't be bigger than 5MB.",
-    })
-    .refine(
-      (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
-      {
-        message: "File format must be either jpg, jpeg or png.",
-      },
-    ),
+    .positive({ message: "Price must be positive" }),
+  // image: zfd
+  //   .file()
+  //   .refine((file) => file.size < 5000000, {
+  //     message: "File can't be bigger than 5MB.",
+  //   })
+  //   .refine(
+  //     (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
+  //     {
+  //       message: "File format must be either jpg, jpeg or png.",
+  //     },
+  //   ),
   quantity: z.coerce
     .number()
     .int()
-    .nonnegative({ message: "Quantity cannot be negative" }),
+    .positive({ message: "Quantity must be positive" }),
   issued: z.coerce
     .number()
     .int()
