@@ -1,5 +1,4 @@
 import CategoryIssueChart from "@/components/Reports/CategoryIssue";
-import ItemQuantityChart from "@/components/Reports/ItemQuantityChart";
 import ItemsChart from "@/components/Reports/ItemsChart";
 import RevenueTrendChart from "@/components/Reports/RevenueTrend";
 import { IssuancesContextProvider } from "@/context/IssuancesContext";
