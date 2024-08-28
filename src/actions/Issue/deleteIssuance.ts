@@ -1,19 +1,24 @@
 "use server";
-import { getIssuanceById, markIssuanceReturned } from "@/data/issue";
+import {
+  deleteIssuanceById,
+  getIssuanceById,
+  markIssuanceReturned,
+} from "@/data/issue";
 import { updateItemIssueCountById } from "@/data/item";
 import { PrimsaCodeResponse } from "../../../prisma/PrismaCodeResponse";
-export const returnItem = async (issuanceId: number) => {
+export const deleteIssuance = async (issuanceId: number) => {
   try {
     const issued = await getIssuanceById(issuanceId);
     if (issued) {
-      await markIssuanceReturned(issuanceId);
       await updateItemIssueCountById(issued.itemId, issued.quantity, "remove");
-      return { success: "Issuance returnd successfully" };
+      await deleteIssuanceById(issuanceId);
+      return { success: "Issuance record deleted successfully" };
     } else {
       return { error: "No issue record found" };
     }
-  } catch (error: any) {
+  } catch (error) {
     const errHandler = new PrimsaCodeResponse(error);
     return { error: errHandler.getErrorResponse().message };
+    return { error: JSON.stringify(error) };
   }
 };

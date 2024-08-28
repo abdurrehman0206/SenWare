@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useItemsContext } from "@/hooks/useItemsContext";
+
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -44,14 +44,6 @@ import {
 
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogClose,
-  DialogTitle,
-  DialogFooter,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Table,
   TableBody,
   TableCell,
@@ -65,15 +57,15 @@ import { useState, useEffect, useTransition } from "react";
 import { FormError } from "@/components/FormInfo/FormError";
 import { DeleteIcon } from "@/components/Icons/Delete";
 import Bounded from "@/components/Utils/Bounded";
-import ListHeader from "./ListHeader";
-import Loading from "@/app/loading";
-import { deleteItem } from "@/actions/Item/deleteItem";
-import { ItemsContextProvider } from "@/context/ItemsContext";
+import { deleteRecipient } from "@/actions/Recipient/deleteRecipient";
 import { CopyIcon } from "@/components/Icons/Copy";
 import { NoteIcon } from "@/components/Icons/Note";
 import { UserCheckIcon } from "@/components/Icons/UserCheck";
-import IssueItemForm from "./IssueItemForm";
+import { useIssuancesContext } from "@/hooks/useIssuancesContext";
+import { deleteIssuance } from "@/actions/Issue/deleteIssuance";
 import { toast } from "sonner";
+import { returnItem } from "@/actions/Issue/returnItem";
+import { CheckIcon } from "../Icons/Check";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -90,10 +82,9 @@ const SortButton = ({ column, headerName }: any) => {
   );
 };
 
-const ItemsList = () => {
-  const { items, dispatch, isPending, refreshItems } = useItemsContext();
-  // const [isPending, startTransition] = useTransition();
-  // const [items, setItems] = useState<any[]>([]);
+const IssuanceList = () => {
+  const { issuances, dispatch, isPending, refreshIssuances } =
+    useIssuancesContext();
   const [error, setError] = useState<string | undefined>("");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -112,70 +103,56 @@ const ItemsList = () => {
       },
     },
     {
-      accessorKey: "name",
+      accessorKey: "recipientId",
       enableSorting: true,
       header: ({ column }) => {
-        return <SortButton column={column} headerName={"Name"} />;
+        return <SortButton column={column} headerName={"Recipient ID"} />;
       },
     },
     {
-      accessorKey: "brand",
-      header: "Brand",
-      enableSorting: false,
-    },
-    {
-      accessorKey: "barcode",
+      accessorKey: "recipientName",
       enableSorting: true,
       header: ({ column }) => {
-        return <SortButton column={column} headerName={"Barcode"} />;
+        return <SortButton column={column} headerName={"Recipient Name"} />;
       },
     },
     {
-      accessorKey: "vendor",
+      accessorKey: "recipientBranchName",
       enableSorting: true,
       header: ({ column }) => {
-        return <SortButton column={column} headerName={"Vendor"} />;
+        return <SortButton column={column} headerName={"Recipient Branch"} />;
+      },
+    },
+
+    {
+      accessorKey: "itemName",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Item Name"} />;
       },
     },
     {
-      accessorKey: "price",
+      accessorKey: "itemBarcode",
       enableSorting: true,
       header: ({ column }) => {
-        return <SortButton column={column} headerName={"Price"} />;
-      },
-      // cell: ({ row }) => {
-      //   const formatted = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "PKR",
-      //   }).format(row.getValue("price"));
-      //   return <div className="text-right font-medium">{formatted}</div>;
-      // },
-    },
-    {
-      accessorKey: "quantity",
-      header: "Quantity",
-      enableSorting: true,
-    },
-    {
-      accessorKey: "issued",
-      header: "Issued",
-      enableSorting: true,
-    },
-    {
-      accessorKey: "categoryName",
-      enableSorting: true,
-      header: ({ column }) => {
-        return <SortButton column={column} headerName={"Category"} />;
+        return <SortButton column={column} headerName={"Item Code"} />;
       },
     },
     {
-      accessorKey: "image",
-      header: "Image",
+      accessorKey: "quantityIssued",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Item Quantity"} />;
+      },
+    },
+    {
+      accessorKey: "itemImage",
+      header: "Item Image",
       enableSorting: false,
       cell: ({ row }) => (
         <div className="relative w-10 h-10 ring-teal-100 rounded-sm overflow-hidden shadow-sm">
           <Image
-            src={row.getValue("image") || ""}
+            src={row.getValue("itemImage") || ""}
             alt="item image"
             fill={true}
             className="object-cover"
@@ -183,22 +160,64 @@ const ItemsList = () => {
         </div>
       ),
     },
+
+    {
+      accessorKey: "issuedAt",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Issue Time"} />;
+      },
+    },
+    {
+      accessorKey: "returned",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Status"} />;
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="flex">
+            {row.getValue("returned") ? (
+              <div className="py-1 px-2 bg-emerald-400/10 rounded-full text-xs text-emerald-400">
+                Returned
+              </div>
+            ) : (
+              <div className="py-1 px-2 bg-purple-400/10 rounded-full text-xs text-purple-400">
+                Issued
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+
     {
       id: "actions",
       cell: ({ row }) => {
-        const item = row.original;
-        const handleDelete = async (itemId: number) => {
-          const response = await deleteItem(itemId);
+        const issuance = row.original;
+        const handleDelete = async (issuanceId: number) => {
+          const response = await deleteIssuance(issuanceId);
           if (response.success) {
             toast.success(response.success);
-            refreshItems();
+            refreshIssuances();
           } else {
             toast.error(response.error);
           }
         };
-        const handleAlertTriggerClick = (event: React.MouseEvent) => {
-          event.stopPropagation();
+        const handleReturn = async (issuanceId: number) => {
+          if (issuance.returned) {
+            toast.error("Item already returned");
+            return;
+          }
+          const response = await returnItem(issuanceId);
+          if (response.success) {
+            toast.success(response.success);
+            refreshIssuances();
+          } else {
+            toast.error(response.error);
+          }
         };
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -209,31 +228,19 @@ const ItemsList = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(item.id)}
+                onClick={() => navigator.clipboard.writeText(issuance.id)}
               >
                 <CopyIcon className="w-4 h-4 stroke-black mr-1" />
-                Copy item ID
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <NoteIcon className="w-4 h-4 stroke-black mr-1" />
-                View details
+              <DropdownMenuItem
+                onClick={() => handleReturn(issuance.id)}
+                className="bg-emerald-400/10 text-emerald-400 focus:bg-emerald-400/20 focus:text-emerald-400"
+              >
+                <CheckIcon className="w-4 h-4 stroke-emerald-400 mr-1" />
+                Mark Returned
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-
-              <Dialog>
-                <DialogTrigger asChild onSelect={(e) => e.preventDefault()}>
-                  <DropdownMenuItem>
-                    <UserCheckIcon className="w-4 h-4 stroke-black mr-1" />
-                    Issue Item
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogContent className="min-w-[800px]">
-                  <DialogTitle className="m-auto">Issue Item</DialogTitle>
-                  <IssueItemForm itemId={item.id} />
-                </DialogContent>
-              </Dialog>
-
               <DropdownMenuSeparator />
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -242,7 +249,7 @@ const ItemsList = () => {
                     className="text-destructive bg-destructive/10 focus-visible:bg-destructive/20 focus:bg-destructive/20 hover:bg-destructive/20 focus-visible:text-destructive focus:text-destructive"
                   >
                     <DeleteIcon className={"stroke-destructive w-4 h-4 mr-1"} />
-                    Delete Item
+                    Delete Issuance
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -252,8 +259,8 @@ const ItemsList = () => {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      the item from the inventory and remove any data from our
-                      servers.
+                      the issuance record from the database and mark the item as
+                      returned.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -262,7 +269,7 @@ const ItemsList = () => {
                     </AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-teal-200 text-white hover:bg-teal-400"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(issuance.id)}
                     >
                       Continue
                     </AlertDialogAction>
@@ -277,7 +284,7 @@ const ItemsList = () => {
   ];
 
   const table = useReactTable({
-    data: items,
+    data: issuances,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -317,9 +324,14 @@ const ItemsList = () => {
         <div className="flex items-center ">
           <Input
             placeholder="Filter items..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("recipientName")?.getFilterValue() as string) ??
+              ""
+            }
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table
+                .getColumn("recipientName")
+                ?.setFilterValue(event.target.value)
             }
             className="max-w-sm  focus-visible:ring-teal-200 "
           />
@@ -327,7 +339,7 @@ const ItemsList = () => {
             <DropdownMenuTrigger asChild className="mr-2">
               <Button
                 variant="outline"
-                className="ml-auto ring-neutral-200 border-teal-200 hover:bg-teal-400/10"
+                className="ml-auto border-teal-200 hover:bg-teal-400/10 text-teal-400 hover:text-teal-400"
               >
                 Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
               </Button>
@@ -352,7 +364,6 @@ const ItemsList = () => {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <ListHeader />
         </div>
         <div className="rounded-md border">
           <Table>
@@ -436,4 +447,4 @@ const ItemsList = () => {
   );
 };
 
-export default ItemsList;
+export default IssuanceList;

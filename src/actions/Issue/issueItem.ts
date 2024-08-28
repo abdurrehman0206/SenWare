@@ -26,7 +26,7 @@ export const issueItem = async (data: IssuanceFormData) => {
         quantity,
       },
     });
-    await updateItemIssueCountById(itemId as number, quantity);
+    await updateItemIssueCountById(itemId as number, quantity , "add");
     return { success: "Item issued successfully" };
   } catch (error) {
     const errHandler = new PrimsaCodeResponse(error);

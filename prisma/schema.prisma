@@ -71,6 +71,7 @@ model Issuance {
   itemId      Int
   recipientId Int
   quantity    Int
+  returned    Boolean   @default(false)
   issuedAt    DateTime  @default(now())
   recipient   Recipient @relation(fields: [recipientId], references: [id])
   item        Item      @relation(fields: [itemId], references: [id])

@@ -23,11 +23,18 @@ export const deleteItemById = async (itemId: number) => {
 export const updateItemIssueCountById = async (
   itemId: number,
   issueQuantity: number,
+  mode: "add" | "remove",
 ) => {
   try {
     const itemToUpdate = await db.item.findUnique({ where: { id: itemId } });
     if (itemToUpdate) {
-      const totalIssuedQuantity = itemToUpdate?.issued + issueQuantity;
+      let totalIssuedQuantity = itemToUpdate.issued;
+      if (mode === "add") {
+        totalIssuedQuantity += issueQuantity;
+      }
+      if (mode === "remove") {
+        totalIssuedQuantity -= issueQuantity;
+      }
       await db.item.update({
         where: { id: itemId },
         data: { issued: totalIssuedQuantity },

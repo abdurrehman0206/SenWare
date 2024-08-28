@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { deleteItemById } from "@/data/item";
-
+import { PrimsaCodeResponse } from "../../../prisma/PrismaCodeResponse";
 export const deleteItem = async (id: number) => {
   try {
     const item = await deleteItemById(id);
@@ -14,6 +14,7 @@ export const deleteItem = async (id: number) => {
     }
     return { success: "Item deleted successfully" };
   } catch (error) {
-    return { error: error ? error : "Failed to delete item" };
+    const errHandler = new PrimsaCodeResponse(error);
+    return { error: errHandler.getErrorResponse().message };
   }
 };

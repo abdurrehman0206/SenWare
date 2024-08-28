@@ -21,3 +21,16 @@ export interface RecipientType {
   name: string;
   branchName: string;
 }
+
+export interface IssuanceType {
+  id: number;
+  recipientId: number;
+  recipientName: string;
+  recipientBranchName: string;
+  quantityIssued: number;
+  itemName: string;
+  itemBarcode: string;
+  itemImage: string;
+  issuedAt: string;
+  returned: boolean;
+}
