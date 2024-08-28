@@ -5,10 +5,18 @@ export const LoginSchema = z.object({
   password: z.string().min(5, { message: "Password is Required" }),
 });
 
-export const RegisterSchema = z.object({
-  username: z.string().min(5, { message: "Username is Required" }),
-  password: z.string().min(5, { message: "Password is Required" }),
-});
+export const RegisterSchema = z
+  .object({
+    username: z.string().min(5, { message: "Username is Required" }),
+    password: z.string().min(5, { message: "Password is Required" }),
+    confirmPassword: z
+      .string()
+      .min(5, { message: "Confirm Password is Required" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export const ItemSchema = z.object({
   name: z.string().min(1, { message: "Item name is required" }),

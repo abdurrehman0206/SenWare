@@ -2,12 +2,13 @@
 import { CategoryIcon } from "@/components/Icons/Category";
 import { MoneyBillIcon } from "@/components/Icons/MoneyBill";
 import { StorageIcon } from "@/components/Icons/Storage";
-import StatCard from "@/components/Stats/StatCard";
+import { InventoryIcon } from "@/components/Icons/Inventory";
+import { IssueIcon } from "@/components/Icons/Issue";
 import Bounded from "@/components/Utils/Bounded";
+import StatCard from "@/components/Stats/StatCard";
+import { useMemo } from "react";
 import { useItemsContext } from "@/hooks/useItemsContext";
-import { useEffect, useState, useMemo } from "react";
-import { InventoryIcon } from "../Icons/Inventory";
-import { IssueIcon } from "../Icons/Issue";
+import { formatedNumber } from "@/lib/utils";
 
 const ItemsStatBar = () => {
   const { items } = useItemsContext();
@@ -28,7 +29,7 @@ const ItemsStatBar = () => {
       totalItems: items.length,
       totalQuantity,
       totalIssued,
-      totalRevenue,
+      totalRevenue: formatedNumber(totalRevenue),
       totalCategories: categories.size,
     };
   }, [items]);

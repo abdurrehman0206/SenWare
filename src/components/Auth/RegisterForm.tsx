@@ -35,6 +35,7 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data: RegisterFormData) => {
+    console.log(data);
     setError("");
     setSuccess("");
     startTransition(() => {
@@ -79,6 +80,28 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       id="password"
+                      {...field}
+                      placeholder="••••••"
+                      type="password"
+                      className="active:ring-teal-200 focus-visible:ring-teal-200"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="confirmPassword">
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="confirmPassword"
                       {...field}
                       placeholder="••••••"
                       type="password"

@@ -1,14 +1,10 @@
 "use client";
-import { CategoryIcon } from "@/components/Icons/Category";
-import { MoneyBillIcon } from "@/components/Icons/MoneyBill";
-import { StorageIcon } from "@/components/Icons/Storage";
 import StatCard from "@/components/Stats/StatCard";
 import Bounded from "@/components/Utils/Bounded";
-import { useEffect, useState, useMemo } from "react";
-import { InventoryIcon } from "../Icons/Inventory";
 import { useRecipientsContext } from "@/hooks/useRecipientsContext";
-import { BranchIcon } from "../Icons/Branch";
-import { UserIcon } from "../Icons/User";
+import { useMemo } from "react";
+import { BranchIcon } from "@/components/Icons/Branch";
+import { UserIcon } from "@/components/Icons/User";
 
 const RecipientsStatBar = () => {
   const { recipients } = useRecipientsContext();

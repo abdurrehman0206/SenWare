@@ -74,6 +74,7 @@ import { NoteIcon } from "@/components/Icons/Note";
 import { UserCheckIcon } from "@/components/Icons/UserCheck";
 import IssueItemForm from "./IssueItemForm";
 import { toast } from "sonner";
+import { formatedNumber } from "@/lib/utils";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -141,13 +142,10 @@ const ItemsList = () => {
       header: ({ column }) => {
         return <SortButton column={column} headerName={"Price"} />;
       },
-      // cell: ({ row }) => {
-      //   const formatted = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "PKR",
-      //   }).format(row.getValue("price"));
-      //   return <div className="text-right font-medium">{formatted}</div>;
-      // },
+      cell: ({ row }) => {
+        const formatted = formatedNumber(row.getValue("price"));
+        return <div>{formatted}</div>;
+      },
     },
     {
       accessorKey: "quantity",
@@ -192,10 +190,11 @@ const ItemsList = () => {
     },
     {
       id: "status",
-
-      header: ({ column }) => {
-        return <SortButton column={column} headerName={"Status"} />;
-      },
+      enableSorting: true,
+      // header: ({ column }) => {
+      //   return <SortButton column={column} headerName={"Status"} />;
+      // },
+      header: "Status",
       cell: ({ row }) => {
         const item = row.original;
         const PillItem = () => {

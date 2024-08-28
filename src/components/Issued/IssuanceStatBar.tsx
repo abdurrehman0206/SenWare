@@ -2,14 +2,15 @@
 import { CategoryIcon } from "@/components/Icons/Category";
 import { MoneyBillIcon } from "@/components/Icons/MoneyBill";
 import { StorageIcon } from "@/components/Icons/Storage";
+import { CheckIcon } from "@/components/Icons/Check";
+import { InventoryIcon } from "@/components/Icons/Inventory";
+import { IssueIcon } from "@/components/Icons/Issue";
 import StatCard from "@/components/Stats/StatCard";
 import Bounded from "@/components/Utils/Bounded";
 import { useItemsContext } from "@/hooks/useItemsContext";
 import { useEffect, useState, useMemo } from "react";
-import { InventoryIcon } from "../Icons/Inventory";
-import { IssueIcon } from "../Icons/Issue";
 import { useIssuancesContext } from "@/hooks/useIssuancesContext";
-import { CheckIcon } from "../Icons/Check";
+import { formatedNumber } from "@/lib/utils";
 
 const IssuanceStatBar = () => {
   const { issuances } = useIssuancesContext();
@@ -31,7 +32,7 @@ const IssuanceStatBar = () => {
       totalIssuances: issuances.length,
       totalQuantityIssued,
       totalQuantityReturned,
-      totalRevenueOut,
+      totalRevenueOut: formatedNumber(totalRevenueOut),
     };
   }, [issuances]);
   return (
