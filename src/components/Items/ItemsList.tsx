@@ -167,20 +167,30 @@ const ItemsList = () => {
       },
     },
     {
+      accessorKey: "purchasedAt",
+      enableSorting: true,
+      header: ({ column }) => {
+        return <SortButton column={column} headerName={"Purchased At"} />;
+      },
+    },
+    {
       accessorKey: "image",
       header: "Image",
       enableSorting: false,
       cell: ({ row }) => (
-        <div className="relative w-10 h-10 ring-teal-100 rounded-sm overflow-hidden shadow-sm">
-          <Image
-            src={row.getValue("image") || ""}
-            alt="item image"
-            fill={true}
-            className="object-cover"
-          />
+        <div className="ring-teal-100 rounded-sm overflow-hidden shadow-sm border w-max p-1">
+          <div className="relative w-10 h-10 ">
+            <Image
+              src={row.getValue("image") || ""}
+              alt="item image"
+              fill={true}
+              className="object-cover"
+            />
+          </div>
         </div>
       ),
     },
+
     {
       id: "actions",
       cell: ({ row }) => {

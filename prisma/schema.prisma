@@ -42,6 +42,7 @@ model Item {
   price        Int
   image        String
   quantity     Int        @default(0)
+  purchasedAt  DateTime   @default(now())
   issued       Int        @default(0)
   Category     Category   @relation(fields: [categoryName], references: [name])
   categoryName String

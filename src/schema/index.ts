@@ -43,6 +43,7 @@ export const ItemSchema = z.object({
     .nonnegative({ message: "Issued cannot be negative" })
     .optional(),
   categoryName: z.string().min(1, { message: "Category is required" }),
+  purchasedAt: z.date().optional(),
 });
 
 export const CategorySchema = z.object({

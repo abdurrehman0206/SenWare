@@ -15,6 +15,7 @@ export interface ItemType {
   quantity: number;
   issued: number;
   categoryName: string;
+  purchasedAt: string;
 }
 export interface RecipientType {
   id: number;
