@@ -1,4 +1,3 @@
-
 import * as z from "zod";
 
 export const LoginSchema = z.object({
@@ -35,6 +34,17 @@ export const ItemSchema = z.object({
     .optional(),
   categoryName: z.string().min(1, { message: "Category is required" }),
   purchasedAt: z.date().optional(),
+  image: z
+    .any()
+    .refine((file) => file.size < 5000000, {
+      message: "File can't be bigger than 5MB.",
+    })
+    .refine(
+      (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
+      {
+        message: "File format must be either jpg, jpeg or png.",
+      },
+    ),
 });
 
 export const CategorySchema = z.object({
