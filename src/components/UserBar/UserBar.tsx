@@ -10,7 +10,7 @@ import {
 import { auth } from "@/auth";
 const UserBar = async () => {
   const session = await auth();
-  console.log(session?.user);
+  // console.log(session?.user);
   return (
     <div className="flex flex-row items-center gap-5">
       {/*

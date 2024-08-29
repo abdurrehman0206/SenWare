@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { LogoutIcon } from "../Icons/Logout";
+import { LogoutIcon } from "@/components/Icons/Logout";
 import { signOut } from "@/auth";
 const Logout = () => {
   return (
@@ -8,11 +8,11 @@ const Logout = () => {
         "use server";
         await signOut({ redirectTo: "/login" });
       }}
-      className="mt-auto mb-4"
+      className="mb-4"
     >
       <Button
         type="submit"
-        className="space-x-0 sm:space-x-2 w-full border-teal-200"
+        className="space-x-0 sm:space-x-2 w-full border-teal-200 hover:bg-teal-400/20"
         variant={"outline"}
       >
         <p className="text-teal-400 hidden sm:block">Logout</p>

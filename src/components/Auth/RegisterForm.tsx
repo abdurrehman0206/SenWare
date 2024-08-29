@@ -19,6 +19,7 @@ import * as z from "zod";
 import { RegisterSchema } from "@/schema";
 import { CardWrapper } from "./CardWrapper";
 import { register } from "@/actions/Auth/register";
+import { toast } from "sonner";
 
 type RegisterFormData = z.infer<typeof RegisterSchema>;
 
@@ -31,6 +32,7 @@ const RegisterForm = () => {
     defaultValues: {
       username: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -39,10 +41,19 @@ const RegisterForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      register(data).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      register(data)
+        .then((data) => {
+          if (data.success) {
+            toast.success(data.success);
+            setSuccess(data.success);
+          } else {
+            toast.error(data.error);
+            setError(data.error);
+          }
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
     });
   };
 

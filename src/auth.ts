@@ -10,6 +10,7 @@ declare module "next-auth" {
     user: {
       id: string;
       username: string;
+      isSuperAdmin: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -18,6 +19,7 @@ declare module "next-auth/jwt" {
     user: {
       id: string;
       username: string;
+      isSuperAdmin: boolean;
     };
   }
 }
@@ -35,7 +37,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
-      token.user = { id: token.sub, username: existingUser.username };
+      token.user = {
+        id: token.sub,
+        username: existingUser.username,
+        isSuperAdmin: existingUser.isSuperAdmin,
+      };
       return token;
     },
     async session({ session, token }) {
