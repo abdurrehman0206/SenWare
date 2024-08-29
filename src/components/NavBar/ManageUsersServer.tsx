@@ -5,3 +5,5 @@ const ManageUsersServer = async () => {
   const session = auth();
   return <ManageUsers session={session} />;
 };
+
+export default ManageUsersServer;

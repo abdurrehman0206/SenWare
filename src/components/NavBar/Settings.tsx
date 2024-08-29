@@ -16,6 +16,7 @@ import { auth, signOut } from "@/auth";
 import { SettingsIcon } from "@/components/Icons/Settings";
 import AccountEditForm from "./AccountEditForm";
 import ManageUsers from "./ManageUsers";
+import ManageUsersServer from "./ManageUsersServer";
 
 const Settings = async () => {
   const session = await auth();
@@ -66,7 +67,7 @@ const Settings = async () => {
               <DialogTitle>Manage User</DialogTitle>
               <DialogDescription>Manage other users here.</DialogDescription>
             </DialogHeader>
-            <ManageUsers />
+            <ManageUsersServer />
           </TabsContent>
         </Tabs>
       </DialogContent>
