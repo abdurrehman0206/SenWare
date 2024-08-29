@@ -14,7 +14,7 @@ const StatCard = ({
   return (
     <div
       className={clsx(
-        "ring-1 ring-gray-100 shadow-sm rounded-md w-[200px] p-4 flex flex-col gap-3",
+        "ring-1 ring-gray-100 shadow-sm rounded-md w-full sm:w-[200px] p-4 flex flex-col gap-3",
         className,
       )}
     >

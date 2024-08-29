@@ -28,6 +28,7 @@ import { DeleteIcon } from "@/components/Icons/Delete";
 import { Button } from "@/components/ui/button";
 import { getBranches } from "@/actions/Branch/getBranches";
 import { deleteBranch } from "@/actions/Branch/deleteBranch";
+import { Label } from "@/components/ui/label";
 
 type BranchType = z.infer<typeof BranchSchema>;
 interface BranchSelectorProps {
@@ -68,50 +69,51 @@ const BranchSelector = forwardRef<HTMLButtonElement, BranchSelectorProps>(
       });
     };
     return (
-      <Select value={value} onValueChange={onChange} {...props}>
-        <SelectTrigger ref={ref} className="focus:ring-teal-400">
-          <SelectValue placeholder="Select a Branch" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {branches.map((branch) => (
-              <div
-                key={branch.name}
-                className="flex justify-between items-center hover:bg-teal-400/5 "
-              >
-                <SelectItem
+      <div className="flex gap-2">
+        <Select value={value} onValueChange={onChange} {...props}>
+          <SelectTrigger ref={ref} className="focus:ring-teal-400">
+            <SelectValue placeholder="Select a Branch" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {branches.map((branch) => (
+                <div
                   key={branch.name}
-                  value={branch.name.toString()}
-                  className="focus:bg-transparent"
+                  className="flex justify-between items-center hover:bg-teal-400/5 "
                 >
-                  {branch.name}
-                </SelectItem>
-                <Button
-                  className="bg-transparent hover:bg-transparent shadow-none p-0 h-max rounded-xl"
-                  onClick={() => handleBranchDelete(branch.name)}
-                  disabled={isPending}
-                >
-                  <DeleteIcon className="w-5 h-5 stroke-destructive hover:stroke-transparent hover:fill-destructive/90" />
-                </Button>
-              </div>
-            ))}
-            <Dialog>
-              <DialogTrigger asChild>
-                <SelectLabel className="cursor-pointer flex items-center gap-2 hover:bg-teal-400/10 rounded-sm">
-                  <AddIcon className="w-5 h-5 stroke-black" />
-                  Add Branch
-                </SelectLabel>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add A New Branch</DialogTitle>
-                </DialogHeader>
-                <AddBranchForm flipTag={() => setTag((prev) => !prev)} />
-              </DialogContent>
-            </Dialog>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+                  <SelectItem
+                    key={branch.name}
+                    value={branch.name.toString()}
+                    className="focus:bg-transparent"
+                  >
+                    {branch.name}
+                  </SelectItem>
+                  <Button
+                    className="bg-transparent hover:bg-transparent shadow-none p-0 h-max rounded-xl"
+                    onClick={() => handleBranchDelete(branch.name)}
+                    disabled={isPending}
+                  >
+                    <DeleteIcon className="w-5 h-5 stroke-destructive hover:stroke-transparent hover:fill-destructive/90" />
+                  </Button>
+                </div>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Label className="cursor-pointer flex items-center rounded-sm">
+              <AddIcon className="w-7 h-7 stroke-black hover:stroke-teal-400 " />
+            </Label>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add A New Branch</DialogTitle>
+            </DialogHeader>
+            <AddBranchForm flipTag={() => setTag((prev) => !prev)} />
+          </DialogContent>
+        </Dialog>
+      </div>
     );
   },
 );

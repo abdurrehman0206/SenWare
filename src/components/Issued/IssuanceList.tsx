@@ -196,7 +196,7 @@ const IssuanceList = () => {
       cell: ({ row }) => {
         const issuance = row.original;
         const isReturned: boolean = issuance.returned;
- 
+
         const handleDelete = async (issuanceId: number) => {
           const response = await deleteIssuance(issuanceId);
           if (response.success) {
@@ -333,7 +333,7 @@ const IssuanceList = () => {
   return (
     <Bounded>
       <div className="w-full space-y-3">
-        <div className="flex items-center ">
+        <div className="flex items-start flex-row gap-2 w-full">
           <Input
             placeholder="Filter items..."
             value={

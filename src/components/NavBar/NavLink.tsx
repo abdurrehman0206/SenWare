@@ -18,8 +18,8 @@ const NavLink: React.FC<LinkType> = ({ id, name, path, icon }) => {
       )}
     >
       <Link className="w-full flex flex-row items-center gap-2" href={path}>
-        <div className="h-7 w-6">{icon}</div>
-        {name}
+        <div className="h-6 w-6">{icon}</div>
+        <div className="hidden sm:block">{name}</div>
       </Link>
     </div>
   );

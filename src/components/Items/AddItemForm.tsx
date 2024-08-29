@@ -69,8 +69,11 @@ const AddItemForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-x-2 grid grid-cols-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-2 sm:space-y-6"
+      >
+        <div className="space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 grid grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="name"
@@ -112,7 +115,7 @@ const AddItemForm = () => {
             )}
           />
         </div>
-        <div className="space-x-2 grid grid-cols-2">
+        <div className="space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 grid grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="barcode"
@@ -154,7 +157,7 @@ const AddItemForm = () => {
             )}
           />
         </div>
-        <div className="space-x-2 grid grid-cols-2">
+        <div className="space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 grid grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="price"
@@ -196,7 +199,7 @@ const AddItemForm = () => {
             )}
           />
         </div>
-        <div className="space-x-2 grid grid-cols-2">
+        <div className="space-x-0 space-y-2 sm:space-y-0 sm:space-x-2 grid grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="categoryName"

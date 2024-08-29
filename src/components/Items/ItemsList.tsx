@@ -75,6 +75,7 @@ import { UserCheckIcon } from "@/components/Icons/UserCheck";
 import IssueItemForm from "./IssueItemForm";
 import { toast } from "sonner";
 import { formatedNumber } from "@/lib/utils";
+import AddItemDialog from "./AddItemDialog";
 
 const SortButton = ({ column, headerName }: any) => {
   return (
@@ -373,45 +374,47 @@ const ItemsList = () => {
   return (
     <Bounded>
       <div className="w-full space-y-3">
-        <div className="flex items-center ">
+        <div className="flex items-start flex-col sm:flex-row gap-2 w-full">
           <Input
             placeholder="Filter items..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm  focus-visible:ring-teal-200 "
+            className="w-full md:w-auto focus-visible:ring-teal-200 "
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="mr-2">
-              <Button
-                variant="outline"
-                className="ml-auto ring-neutral-200 border-teal-200 hover:bg-teal-400/10 text-teal-400 hover:text-teal-400"
-              >
-                Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <ListHeader />
+          <div className="flex items-center flex-row  gap-2 w-full">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="ml-auto ring-neutral-200 border-teal-200 hover:bg-teal-400/10 text-teal-400 hover:text-teal-400 w-full sm:w-auto "
+                >
+                  Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <AddItemDialog />
+          </div>
         </div>
         <div className="rounded-md border">
           <Table>

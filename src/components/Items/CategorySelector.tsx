@@ -28,6 +28,7 @@ import { useItemsContext } from "@/hooks/useItemsContext";
 import { DeleteIcon } from "@/components/Icons/Delete";
 import { deleteCategory } from "@/actions/Category/deleteCategory";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 type CategoriesType = z.infer<typeof CategorySchema>;
 interface CategorySelectorProps {
@@ -69,50 +70,54 @@ const CategorySelector = forwardRef<HTMLButtonElement, CategorySelectorProps>(
       });
     };
     return (
-      <Select value={value} onValueChange={onChange} {...props}>
-        <SelectTrigger ref={ref} className="focus:ring-teal-400">
-          <SelectValue placeholder="Select a Category" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {categories.map((category) => (
-              <div
-                key={category.name}
-                className="flex justify-between items-center hover:bg-teal-400/5 "
-              >
-                <SelectItem
+      <div className="flex gap-2">
+        <Select value={value} onValueChange={onChange} {...props}>
+          <SelectTrigger ref={ref} className="focus:ring-teal-400">
+            <SelectValue placeholder="Select a Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {categories.map((category) => (
+                <div
                   key={category.name}
-                  value={category.name.toString()}
-                  className="focus:bg-transparent"
+                  className="flex justify-between items-center hover:bg-teal-400/5 "
                 >
-                  {category.name}
-                </SelectItem>
-                <Button
-                  className="bg-transparent hover:bg-transparent shadow-none p-0 h-max rounded-xl"
-                  onClick={() => handleCategoryDelete(category.name)}
-                  disabled={isPending}
-                >
-                  <DeleteIcon className="w-5 h-5 stroke-destructive hover:stroke-transparent hover:fill-destructive/90" />
-                </Button>
-              </div>
-            ))}
-            <Dialog>
-              <DialogTrigger asChild>
-                <SelectLabel className="cursor-pointer flex items-center gap-2 hover:bg-teal-400/10 rounded-sm">
-                  <AddIcon className="w-5 h-5 stroke-black" />
-                  Add Category
-                </SelectLabel>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add A New Category</DialogTitle>
-                </DialogHeader>
-                <AddCategoryForm flipTag={() => setTag((prev) => !prev)} />
-              </DialogContent>
-            </Dialog>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+                  <SelectItem
+                    key={category.name}
+                    value={category.name.toString()}
+                    className="focus:bg-transparent"
+                  >
+                    {category.name}
+                  </SelectItem>
+                  <Button
+                    className="bg-transparent hover:bg-transparent shadow-none p-0 h-max rounded-xl"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCategoryDelete(category.name);
+                    }}
+                    disabled={isPending}
+                  >
+                    <DeleteIcon className="w-5 h-5 stroke-destructive hover:stroke-transparent hover:fill-destructive/90" />
+                  </Button>
+                </div>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Label className="cursor-pointer flex items-center rounded-sm">
+              <AddIcon className="w-7 h-7 stroke-black hover:stroke-teal-400 " />
+            </Label>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add A New Category</DialogTitle>
+            </DialogHeader>
+            <AddCategoryForm flipTag={() => setTag((prev) => !prev)} />
+          </DialogContent>
+        </Dialog>
+      </div>
     );
   },
 );
