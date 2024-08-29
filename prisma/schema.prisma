@@ -30,7 +30,7 @@ model User {
   id           String    @id @default(cuid())
   username     String    @unique
   password     String
-  isSuperAdmin Boolean  @default(false)
+  isSuperAdmin Boolean   @default(false)
   accounts     Account[]
 }
 
@@ -39,6 +39,7 @@ model Item {
   name         String
   brand        String
   barcode      String     @unique
+  barcodeImage String
   vendor       String
   price        Int
   image        String

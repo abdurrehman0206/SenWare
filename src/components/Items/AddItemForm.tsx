@@ -15,14 +15,17 @@ import { Button } from "@/components/ui/button";
 import { FormSuccess } from "@/components/FormInfo/FormSuccess";
 import { FormError } from "@/components/FormInfo/FormError";
 import { ItemSchema } from "@/schema";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import CategorySelector from "./CategorySelector";
 import { addItem } from "@/actions/Item/addItem";
 import { useItemsContext } from "@/hooks/useItemsContext";
-
+import Barcode from "react-barcode";
+import { ReactBarcode } from "react-jsbarcode";
 type ItemsFormData = z.infer<typeof ItemSchema>;
 import { toast } from "sonner";
+import { DownloadIcon } from "../Icons/Download";
 const AddItemForm = () => {
+  const [barcodeValue, setBarcodeValue] = useState<string>("");
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -36,6 +39,7 @@ const AddItemForm = () => {
       vendor: "",
       price: 0,
       image: undefined,
+      barcodeImage: undefined,
       quantity: 0,
       categoryName: "",
     },
@@ -46,7 +50,15 @@ const AddItemForm = () => {
     for (const [key, value] of Object.entries(data)) {
       formData.append(key, value as string | Blob);
     }
-
+    if (barRef.current) {
+      const svgElement = barRef.current.querySelector("svg");
+      if (svgElement) {
+        const serializer = new XMLSerializer();
+        const source = serializer.serializeToString(svgElement);
+        const blob = new Blob([source], { type: "image/svg+xml" });
+        formData.append("barcodeSVG", blob, `${barcodeValue}.svg`);
+      }
+    }
     setError("");
     setSuccess("");
     startTransition(() => {
@@ -66,10 +78,40 @@ const AddItemForm = () => {
         });
     });
   };
+  const barRef = useRef<any | null>(null);
 
+
+  const handleDownload = () => {
+    if (barRef.current) {
+      const svgElement = barRef.current.querySelector("svg");
+      if (svgElement) {
+        const serializer = new XMLSerializer();
+        const source = serializer.serializeToString(svgElement);
+        const blob = new Blob([source], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${barcodeValue}.svg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }
+  };
   return (
     <Form {...form}>
+      <div className="overflow-scroll" ref={barRef}>
+        {barcodeValue.length !== 0 && (
+          <ReactBarcode value={barcodeValue} options={{ format: "code128" }} />
+        )}
+      </div>
       <form
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-2 sm:space-y-6"
       >
@@ -122,20 +164,38 @@ const AddItemForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Barcode</FormLabel>
-                <FormControl>
-                  <Input
-                    id="barcode"
-                    {...field}
-                    type="text"
-                    placeholder="Barcode"
-                    className="focus-visible:ring-teal-400"
-                    disabled={isPending}
-                  />
-                </FormControl>
+                <div className="flex w-full gap-2">
+                  <FormControl>
+                    <Input
+                      id="barcode"
+                      {...field}
+                      type="text"
+                      placeholder="Barcode"
+                      className="focus-visible:ring-teal-400 w-full"
+                      disabled={isPending}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setBarcodeValue(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel>
+                    <Button
+                      type="button"
+                      onClick={handleDownload}
+                      className="bg-transparent p-0 rounded-full border-0 hover:bg-transparent ring-0 shadow-none"
+                    >
+                      <DownloadIcon
+                        className={"w-7 h-7 stroke-black hover:stroke-teal-400"}
+                      />
+                    </Button>
+                  </FormLabel>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="vendor"

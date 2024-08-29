@@ -23,53 +23,69 @@ export const addItem = async (formData: FormData) => {
       : undefined,
     categoryName: formData.get("categoryName"),
     image: formData.get("image"),
+    barcodeImage: formData.get("barcodeSVG"),
   };
+
   const validatedFields = ItemSchema.safeParse(data);
   if (!validatedFields.success) {
     return { error: "Invalid fields" };
   }
-  const { name, brand, barcode, vendor, price, quantity, categoryName, image } =
-    validatedFields.data;
+
+  const {
+    name,
+    brand,
+    barcode,
+    vendor,
+    price,
+    quantity,
+    categoryName,
+    image,
+    barcodeImage,
+  } = validatedFields.data;
 
   try {
-    const fileName = `${name}_${image.name}`;
+    const imageName = `${name}_${image.name}`;
+    const barcodeImageName = `${name}_${barcodeImage.name}`;
+    let imageUrl = "",
+      barcodeUrl = "";
+
     if (process.env.MODE === "LOCAL") {
       const arrayBuffer = await image.arrayBuffer();
       const buffer = new Uint8Array(arrayBuffer);
-      const filePath = `./public/uploads/${fileName}`;
+      const filePath = `./public/uploads/${imageName}`;
       await fs.mkdir("./public/uploads/", { recursive: true });
       await fs.writeFile(filePath, buffer);
-      await db.item.create({
-        data: {
-          name,
-          brand,
-          barcode,
-          vendor,
-          price,
-          quantity,
-          categoryName,
-          image: `/uploads/${fileName}`,
-        },
-      });
+      imageUrl = `/uploads/${imageName}`;
+      const barcodeBuffer = await barcodeImage.arrayBuffer();
+      const barcodeFilePath = `./public/uploads/${barcodeImageName}`;
+      await fs.writeFile(barcodeFilePath, new Uint8Array(barcodeBuffer));
+      barcodeUrl = `/uploads/${barcodeImageName}`;
     } else if (process.env.MODE === "VERCEL") {
-      const blob = await put(fileName, image, {
+      const blob = await put(imageName, image, { access: "public" });
+      imageUrl = blob.url;
+      const barcodeBlob = await put(barcodeImageName, barcodeImage, {
         access: "public",
       });
-      await db.item.create({
-        data: {
-          name,
-          brand,
-          barcode,
-          vendor,
-          price,
-          quantity,
-          categoryName,
-          image: blob.downloadUrl,
-        },
-      });
+      barcodeUrl = barcodeBlob.url;
     }
+
+    await db.item.create({
+      data: {
+        name,
+        brand,
+        barcode,
+        vendor,
+        price,
+        quantity,
+        categoryName,
+        image: imageUrl,
+        barcodeImage: barcodeUrl,
+      },
+    });
+
     return { success: "Item added successfully" };
   } catch (error: any) {
+    console.log(error);
     const errHandler = new PrimsaCodeResponse(error);
     return { error: errHandler.getErrorResponse().message };
   }

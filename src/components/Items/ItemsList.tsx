@@ -91,6 +91,13 @@ const SortButton = ({ column, headerName }: any) => {
     </Button>
   );
 };
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import Link from "next/link";
+import { DownloadIcon } from "../Icons/Download";
 
 const ItemsList = () => {
   const { items, dispatch, isPending, refreshItems } = useItemsContext();
@@ -171,6 +178,45 @@ const ItemsList = () => {
       header: ({ column }) => {
         return <SortButton column={column} headerName={"Purchased At"} />;
       },
+    },
+    {
+      accessorKey: "barcodeImage",
+      header: "Barcode",
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className="relative flex ">
+          <HoverCard>
+            <HoverCardTrigger className="relative w-20 h-14">
+              <Image
+                src={row.getValue("barcodeImage") || ""}
+                alt="barcode image"
+                fill={true}
+                className="object-contain"
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="relative flex flex-col gap-2 items-center justify-center">
+              <Image
+                src={row.getValue("barcodeImage") || ""}
+                alt="barcode image"
+                width={120}
+                height={100}
+                className="object-contain"
+              />
+              <Link
+                href={row.getValue("barcodeImage")}
+                download={true}
+                target="_blank"
+                rel="noopener noreferrer"
+                locale={false}
+                className="flex flex-row gap-2 items-center"
+              >
+            
+                <DownloadIcon className="h-6 w-6 stroke-black hover:stroke-teal-400" />
+              </Link>
+            </HoverCardContent>
+          </HoverCard>
+        </div>
+      ),
     },
     {
       accessorKey: "image",
