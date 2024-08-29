@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "senware-blob.public.blob.vercel-storage.com",
+        hostname: "aoypinw312binnuy.public.blob.vercel-storage.com",
         port: "",
       },
     ],
