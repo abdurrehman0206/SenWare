@@ -15,9 +15,11 @@ import { Label } from "@/components/ui/label";
 import { auth, signOut } from "@/auth";
 import { SettingsIcon } from "@/components/Icons/Settings";
 import AccountEditForm from "./AccountEditForm";
+import ManageUsers from "./ManageUsers";
+
 const Settings = async () => {
   const session = await auth();
-  console.log(session);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,7 +33,7 @@ const Settings = async () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="">
-        <Tabs defaultValue={""}>
+        <Tabs defaultValue={"account"}>
           <TabsList className="grid w-full grid-cols-2 bg-white shadow-sm mb-4">
             <TabsTrigger
               value="account"
@@ -43,7 +45,7 @@ const Settings = async () => {
             </TabsTrigger>
             {session?.user.isSuperAdmin && (
               <TabsTrigger
-                value="register"
+                value="manage"
                 className={
                   "data-[state=active]:bg-teal-400 data-[state=active]:text-white "
                 }
@@ -59,7 +61,13 @@ const Settings = async () => {
             </DialogHeader>
             <AccountEditForm username={session?.user.username || ""} />
           </TabsContent>
-          <TabsContent value="manage">Change your password here.</TabsContent>
+          <TabsContent value="manage">
+            <DialogHeader className="mb-2">
+              <DialogTitle>Manage User</DialogTitle>
+              <DialogDescription>Manage other users here.</DialogDescription>
+            </DialogHeader>
+            <ManageUsers />
+          </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>

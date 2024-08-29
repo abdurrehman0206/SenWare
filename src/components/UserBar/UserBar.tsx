@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { AvatarIcon } from "../Icons/Avatar";
-import { NotificationIcon } from "../Icons/Notification";
+import { AvatarIcon } from "@/components/Icons/Avatar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NotificationIcon } from "@/components/Icons/Notification";
 import {
   HoverCard,
   HoverCardContent,
@@ -10,7 +10,7 @@ import {
 import { auth } from "@/auth";
 const UserBar = async () => {
   const session = await auth();
-  // console.log(session?.user);
+
   return (
     <div className="flex flex-row items-center gap-5">
       {/*
@@ -29,7 +29,9 @@ const UserBar = async () => {
             src={"avatar.svg"}
             className="object-cover text-teal-400"
           />
-          <AvatarFallback>A</AvatarFallback>
+          <AvatarFallback>
+            {session?.user?.username[0].toUpperCase()}
+          </AvatarFallback>
         </Avatar>
 
         <h5>{session?.user?.username}</h5>
