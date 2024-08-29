@@ -65,7 +65,7 @@ import { useState, useEffect, useTransition } from "react";
 import { FormError } from "@/components/FormInfo/FormError";
 import { DeleteIcon } from "@/components/Icons/Delete";
 import Bounded from "@/components/Utils/Bounded";
-import ListHeader from "./ListHeader";
+
 import Loading from "@/app/loading";
 import { deleteItem } from "@/actions/Item/deleteItem";
 import { ItemsContextProvider } from "@/context/ItemsContext";

@@ -1,6 +1,25 @@
 "use client";
 
-import * as React from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRecipientsContext } from "@/hooks/useRecipientsContext";
 import {
   CaretSortIcon,
@@ -19,29 +38,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import * as React from "react";
 
+import { FormError } from "@/components/FormInfo/FormError";
+import { DeleteIcon } from "@/components/Icons/Delete";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -51,17 +51,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getItems } from "@/actions/Item/getItems";
-import Image from "next/image";
-import { useState, useEffect, useTransition } from "react";
-import { FormError } from "@/components/FormInfo/FormError";
-import { DeleteIcon } from "@/components/Icons/Delete";
 import Bounded from "@/components/Utils/Bounded";
-import ListHeader from "./ListHeader";
+import { useState } from "react";
+
 import { deleteRecipient } from "@/actions/Recipient/deleteRecipient";
 import { CopyIcon } from "@/components/Icons/Copy";
-import { NoteIcon } from "@/components/Icons/Note";
-import { UserCheckIcon } from "@/components/Icons/UserCheck";
 import { toast } from "sonner";
 import AddRecipientDialog from "./AddRecipientDialog";
 
