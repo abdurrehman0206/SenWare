@@ -1,6 +1,11 @@
 import TopBar from "@/components/TopBar/TopBar";
 import NavBar from "@/components/NavBar/NavBar";
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+import { auth } from "@/auth";
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+  const session = await auth();
+  if (session === null || !session.user) {
+    return;
+  }
   return (
     <div className="bg-teal-200 p-0 sm:p-2 h-full ">
       <div className="rounded-none sm:rounded-2xl overflow-hidden bg-white h-full flex flex-col shadow-lg">

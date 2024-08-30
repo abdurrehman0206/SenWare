@@ -38,8 +38,7 @@ const AddItemForm = () => {
       barcode: "",
       vendor: "",
       price: 0,
-      image: undefined,
-      barcodeImage: undefined,
+    
       quantity: 0,
       categoryName: "",
     },

@@ -10,7 +10,7 @@ import {
 import { auth } from "@/auth";
 const UserBar = async () => {
   const session = await auth();
-
+  console.log(session);
   return (
     <div className="flex flex-row items-center gap-5">
       {/*
@@ -30,7 +30,7 @@ const UserBar = async () => {
             className="object-cover text-teal-400"
           />
           <AvatarFallback>
-            {session?.user?.username[0].toUpperCase()}
+            {session?.user?.username?.toUpperCase() || "U"}
           </AvatarFallback>
         </Avatar>
 

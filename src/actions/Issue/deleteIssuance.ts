@@ -10,7 +10,13 @@ export const deleteIssuance = async (issuanceId: number) => {
   try {
     const issued = await getIssuanceById(issuanceId);
     if (issued) {
-      await updateItemIssueCountById(issued.itemId, issued.quantity, "remove");
+      if (!issued.returned) {
+        await updateItemIssueCountById(
+          issued.itemId,
+          issued.quantity,
+          "remove",
+        );
+      }
       await deleteIssuanceById(issuanceId);
       return { success: "Issuance record deleted successfully" };
     } else {
