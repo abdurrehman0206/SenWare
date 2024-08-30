@@ -17,7 +17,7 @@ export function TabsBar() {
   const pathname = usePathname();
   const router = useRouter();
   return (
-    <Tabs defaultValue={pathname.replace("/", "")} className="w-[400px] ">
+    <Tabs defaultValue={pathname.replace("/", "")} className="w-full ">
       <TabsList className="grid w-full grid-cols-2 bg-white shadow-sm">
         <TabsTrigger
           value="login"

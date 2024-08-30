@@ -14,7 +14,7 @@ interface CardWrapperProps {
 }
 export const CardWrapper = ({ children, headerLabel }: CardWrapperProps) => {
   return (
-    <Card className="w-[400px] shadow-md">
+    <Card className="w-full shadow-md">
       <CardHeader className="flex flex-row gap-2 justify-center items-center font-semibold text-2xl">
         <LockIcon className={"stroke-black stroke-2 h-6 w-6"} />
         {headerLabel}
@@ -22,4 +22,4 @@ export const CardWrapper = ({ children, headerLabel }: CardWrapperProps) => {
       <CardContent>{children}</CardContent>
     </Card>
   );
-}; 
+};
