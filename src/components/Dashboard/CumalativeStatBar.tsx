@@ -63,111 +63,131 @@ const CumalativeStatBar = () => {
   }, [items, recipients, issuances]);
 
   return (
-    <Bounded>
-      <h1 className="text-gray-400 mb-4 ">Overview</h1>
-      <div className="flex flex-row gap-2 w-full flex-wrap">
-        <StatCard
-          statHeader={{
-            text: "Total Items",
-            className: "font-semibold text-blue-400",
-          }}
-          statIcon={<StorageIcon className={"w-6 h-6 stroke-blue-400"} />}
-          statCount={statCount.totalItems || 0}
-          className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Total Quantity",
-            className: "font-semibold text-purple-400",
-          }}
-          statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
-          statCount={statCount.totalQuantity || 0}
-          className="hover:ring-purple-400 ring-1 hover:bg-purple-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Items Issued",
-            className: "font-semibold text-rose-400",
-          }}
-          statIcon={<IssueIcon className={"w-6 h-6 stroke-rose-400"} />}
-          statCount={statCount.totalIssued || 0}
-          className="hover:ring-rose-400 ring-1 hover:bg-rose-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Categories",
-            className: "font-semibold text-orange-400",
-          }}
-          statIcon={<CategoryIcon className={"w-6 h-6 stroke-orange-400"} />}
-          statCount={statCount.totalCategories || 0}
-          className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Revenue",
-            className: "font-semibold text-emerald-400",
-          }}
-          statIcon={<MoneyBillIcon className={"w-6 h-6 stroke-emerald-400"} />}
-          statCount={statCount.totalRevenue || 0}
-          className="hover:ring-emerald-400 ring-1 hover:bg-emerald-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Total Recipients",
-            className: "font-semibold text-blue-400",
-          }}
-          statIcon={<UserIcon className={"w-6 h-6 stroke-blue-400"} />}
-          statCount={statCount.totalRecipients || 0}
-          className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Total Branches",
-            className: "font-semibold text-orange-400",
-          }}
-          statIcon={<BranchIcon className={"w-6 h-6 stroke-orange-400"} />}
-          statCount={statCount.totalBranches || 0}
-          className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Revenue Out",
-            className: "font-semibold text-emerald-400",
-          }}
-          statIcon={<MoneyBillIcon className={"w-6 h-6 stroke-emerald-400"} />}
-          statCount={statCount.totalRevenueOut || 0}
-          className="hover:ring-emerald-400 ring-1 hover:bg-emerald-400/5"
-        />
+    <div className="grid grid-cols-3 gap-2">
+      <Bounded className="col-span-2">
+        <h1 className="text-gray-400 mb-4 ">Items Overview</h1>
+        <div className="flex flex-row gap-2 w-full flex-wrap">
+          <StatCard
+            statHeader={{
+              text: "Total Items",
+              className: "font-semibold text-blue-400",
+            }}
+            statIcon={<StorageIcon className={"w-6 h-6 stroke-blue-400"} />}
+            statCount={statCount.totalItems || 0}
+            className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
+          />
+          <StatCard
+            statHeader={{
+              text: "Total Quantity",
+              className: "font-semibold text-purple-400",
+            }}
+            statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
+            statCount={statCount.totalQuantity || 0}
+            className="hover:ring-purple-400 ring-1 hover:bg-purple-400/5"
+          />
 
-        <StatCard
-          statHeader={{
-            text: "Items Returned",
-            className: "font-semibold text-rose-400",
-          }}
-          statIcon={<CheckIcon className={"w-6 h-6 stroke-rose-400"} />}
-          statCount={statCount.totalQuantityReturned || 0}
-          className="hover:ring-rose-400 ring-1 hover:bg-rose-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Issuance Records",
-            className: "font-semibold text-blue-400",
-          }}
-          statIcon={<IssueIcon className={"w-6 h-6 stroke-blue-400"} />}
-          statCount={statCount.totalIssuances || 0}
-          className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
-        />
-        <StatCard
-          statHeader={{
-            text: "Currently Issued",
-            className: "font-semibold text-purple-400",
-          }}
-          statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
-          statCount={statCount.totalQuantityIssued || 0}
-          className="hover:ring-purple-400 ring-1 hover:bg-purple-400/5"
-        />
-      </div>
-    </Bounded>
+          <StatCard
+            statHeader={{
+              text: "Categories",
+              className: "font-semibold text-orange-400",
+            }}
+            statIcon={<CategoryIcon className={"w-6 h-6 stroke-orange-400"} />}
+            statCount={statCount.totalCategories || 0}
+            className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
+          />
+          <StatCard
+            statHeader={{
+              text: "Revenue",
+              className: "font-semibold text-emerald-400",
+            }}
+            statIcon={
+              <MoneyBillIcon className={"w-6 h-6 stroke-emerald-400"} />
+            }
+            statCount={statCount.totalRevenue || 0}
+            className="hover:ring-emerald-400 ring-1 hover:bg-emerald-400/5"
+          />
+        </div>
+      </Bounded>
+
+      <Bounded>
+        <h1 className="text-gray-400 mb-4 ">Recipients Overview</h1>
+        <div className="flex flex-row gap-2 w-full flex-wrap">
+          <StatCard
+            statHeader={{
+              text: "Total Recipients",
+              className: "font-semibold text-blue-400",
+            }}
+            statIcon={<UserIcon className={"w-6 h-6 stroke-blue-400"} />}
+            statCount={statCount.totalRecipients || 0}
+            className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
+          />
+          <StatCard
+            statHeader={{
+              text: "Total Branches",
+              className: "font-semibold text-orange-400",
+            }}
+            statIcon={<BranchIcon className={"w-6 h-6 stroke-orange-400"} />}
+            statCount={statCount.totalBranches || 0}
+            className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
+          />
+        </div>
+      </Bounded>
+
+      <Bounded className="col-span-2">
+        <h1 className="text-gray-400 mb-4 ">Issuance Overview</h1>
+        <div className="flex flex-row gap-2 w-full flex-wrap">
+          <StatCard
+            statHeader={{
+              text: "Items Issued",
+              className: "font-semibold text-rose-400",
+            }}
+            statIcon={<IssueIcon className={"w-6 h-6 stroke-rose-400"} />}
+            statCount={statCount.totalIssued || 0}
+            className="hover:ring-rose-400 ring-1 hover:bg-rose-400/5"
+          />
+
+          <StatCard
+            statHeader={{
+              text: "Revenue Out",
+              className: "font-semibold text-emerald-400",
+            }}
+            statIcon={
+              <MoneyBillIcon className={"w-6 h-6 stroke-emerald-400"} />
+            }
+            statCount={statCount.totalRevenueOut || 0}
+            className="hover:ring-emerald-400 ring-1 hover:bg-emerald-400/5"
+          />
+
+          <StatCard
+            statHeader={{
+              text: "Items Returned",
+              className: "font-semibold text-rose-400",
+            }}
+            statIcon={<CheckIcon className={"w-6 h-6 stroke-rose-400"} />}
+            statCount={statCount.totalQuantityReturned || 0}
+            className="hover:ring-rose-400 ring-1 hover:bg-rose-400/5"
+          />
+          <StatCard
+            statHeader={{
+              text: "Issuance Records",
+              className: "font-semibold text-blue-400",
+            }}
+            statIcon={<IssueIcon className={"w-6 h-6 stroke-blue-400"} />}
+            statCount={statCount.totalIssuances || 0}
+            className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
+          />
+          <StatCard
+            statHeader={{
+              text: "Currently Issued",
+              className: "font-semibold text-purple-400",
+            }}
+            statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
+            statCount={statCount.totalQuantityIssued || 0}
+            className="hover:ring-purple-400 ring-1 hover:bg-purple-400/5"
+          />
+        </div>
+      </Bounded>
+    </div>
   );
 };
 
