@@ -43,6 +43,7 @@ const ItemsStatBar = () => {
           }}
           statIcon={<StorageIcon className={"w-6 h-6 stroke-blue-400"} />}
           statCount={statCount.totalItems || 0}
+          className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
         />
         <StatCard
           statHeader={{
@@ -51,6 +52,7 @@ const ItemsStatBar = () => {
           }}
           statIcon={<InventoryIcon className={"w-6 h-6 stroke-purple-400"} />}
           statCount={statCount.totalQuantity || 0}
+          className="hover:ring-purple-400 ring-1 hover:bg-purple-400/5"
         />
         <StatCard
           statHeader={{
@@ -59,6 +61,7 @@ const ItemsStatBar = () => {
           }}
           statIcon={<IssueIcon className={"w-6 h-6 stroke-rose-400"} />}
           statCount={statCount.totalIssued || 0}
+          className="hover:ring-rose-400 ring-1 hover:bg-rose-400/5"
         />
         <StatCard
           statHeader={{
@@ -67,6 +70,7 @@ const ItemsStatBar = () => {
           }}
           statIcon={<CategoryIcon className={"w-6 h-6 stroke-orange-400"} />}
           statCount={statCount.totalCategories || 0}
+          className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
         />
         <StatCard
           statHeader={{
@@ -75,6 +79,7 @@ const ItemsStatBar = () => {
           }}
           statIcon={<MoneyBillIcon className={"w-6 h-6 stroke-emerald-400"} />}
           statCount={statCount.totalRevenue || 0}
+          className="hover:ring-emerald-400 ring-1 hover:bg-emerald-400/5"
         />
       </div>
     </Bounded>

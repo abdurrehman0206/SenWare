@@ -30,6 +30,7 @@ const RecipientsStatBar = () => {
           }}
           statIcon={<UserIcon className={"w-6 h-6 stroke-blue-400"} />}
           statCount={statCount.totalItems || 0}
+          className="hover:ring-blue-400 ring-1 hover:bg-blue-400/5"
         />
         <StatCard
           statHeader={{
@@ -38,6 +39,7 @@ const RecipientsStatBar = () => {
           }}
           statIcon={<BranchIcon className={"w-6 h-6 stroke-orange-400"} />}
           statCount={statCount.totalBranches || 0}
+          className="hover:ring-orange-400 ring-1 hover:bg-orange-400/5"
         />
       </div>
     </Bounded>
