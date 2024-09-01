@@ -64,7 +64,7 @@ const CumalativeStatBar = () => {
 
   return (
     <div className="grid grid-cols-3 gap-2">
-      <Bounded className="col-span-2">
+      <Bounded className="col-span-3 md:col-span-2">
         <h1 className="text-gray-400 mb-4 ">Items Overview</h1>
         <div className="flex flex-row gap-2 w-full flex-wrap">
           <StatCard
@@ -109,7 +109,7 @@ const CumalativeStatBar = () => {
         </div>
       </Bounded>
 
-      <Bounded>
+      <Bounded className="col-span-3 md:col-span-1">
         <h1 className="text-gray-400 mb-4 ">Recipients Overview</h1>
         <div className="flex flex-row gap-2 w-full flex-wrap">
           <StatCard
@@ -133,7 +133,7 @@ const CumalativeStatBar = () => {
         </div>
       </Bounded>
 
-      <Bounded className="col-span-2">
+      <Bounded className="col-span-3">
         <h1 className="text-gray-400 mb-4 ">Issuance Overview</h1>
         <div className="flex flex-row gap-2 w-full flex-wrap">
           <StatCard
